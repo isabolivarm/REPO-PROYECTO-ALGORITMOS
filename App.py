@@ -4,6 +4,6 @@ class App:
 
     def start(self):
         api = API()
-        api.cargar_personajes()
-        
-        print("Starting the app...")
+        # lista_especies = api.cargar_especies()
+        # lista_planetas = api.cargar_planetas()        
+               

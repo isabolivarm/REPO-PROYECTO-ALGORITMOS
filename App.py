@@ -16,8 +16,6 @@ class App:
     vehicles_obj=[]
 
 
-
-
     def crear_films(self):
         dbfilms=cargar_api("https://www.swapi.tech/api/films/")
         for film in dbfilms:
@@ -31,3 +29,5 @@ class App:
             print(f"Opening Crawl: {film.opening_crawl}")
             print(f"Director: {film.director}")
             print("---")
+    
+    

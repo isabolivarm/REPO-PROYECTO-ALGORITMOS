@@ -8,6 +8,14 @@ from Film import Film
 
 class App:
     film_obj=[]
+    planets_obj=[]
+    characters_obj=[]
+    spaceships_obj=[]
+    weapons_obj=[]
+    species_obj=[]
+    vehicles_obj=[]
+
+
 
 
     def crear_films(self):

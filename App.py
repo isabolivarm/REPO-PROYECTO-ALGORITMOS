@@ -86,3 +86,20 @@ class App:
                # m+=1
             else:
                 print("Integrante inválido. Intente nuevamente")
+
+    
+    def menu():
+        print("Ingrese el número de opción que desea explorar")
+        print("1. Explorar las películas de la saga")
+        print("2. Explorar las especies de seres vivos")
+        print("3. Buscar un personaje")
+        print("4. Crear un gráfico de personajes según su planeta de nacimiento")
+        print("5. Crear un gráfico para comparar las naves")
+        print("6. Conocer las estadísticas de las naves")
+        print("7. Crear una misión")
+        opcion_menu=int(input("-->"))
+
+    
+
+
+

@@ -1,13 +1,27 @@
 from ApiVehicles import cargar_api
 from ApiStarships import cargar_api
-from ApiSpecies import cargar_api
-from ApiPlanets import cargar_api
+from ApiSpecies import cargar_especies
+from ApiPlanets import cargar_planetas
 from ApiPeople import cargar_api
 from ApiFilms import cargar_api
 from Film import Film
+import csv
+file_path="C:\Users\Gaby_\Downloads\starwars.zip\csv"
+with open (file_path,"r") as file:
+    csv_reader=csv.reader(file)
+    header=next(csv_reader)
+    data=[row for row in csv_reader]
 
+print("Encabezado:",header)
+print("Primeras filas de datos: ",data[:5])
 class App:
     film_obj=[]
+    planets_obj=[]
+    characters_obj=[]
+    spaceships_obj=[]
+    weapons_obj=[]
+    species_obj=[]
+    vehicles_obj=[]
 
 
     def crear_films(self):
@@ -23,6 +37,32 @@ class App:
             print(f"Opening Crawl: {film.opening_crawl}")
             print(f"Director: {film.director}")
             print("---")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     def crear_mision(self):
         print("Creemos una nueva misión")

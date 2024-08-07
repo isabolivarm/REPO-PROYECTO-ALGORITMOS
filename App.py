@@ -22,6 +22,7 @@ class App:
     weapons_obj=[]
     species_obj=[]
     vehicles_obj=[]
+    
 
 
     def crear_films(self):
@@ -43,33 +44,12 @@ class App:
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     def crear_mision(self):
         print("Creemos una nueva misión")
         nombre_mision=input("Ingrese el nombre de la mision: ")
         while True:
             planeta_destino = input("Ingrese el planeta destino: ")
-           # if planeta_destino not in #lista de planetas objetos
+        #    if planeta_destino not in planets_obj
          #       print("Planeta inválido")
          #   else:
             break
@@ -78,33 +58,28 @@ class App:
         armas_utilizar = []
         n = 0
 
-
         while n < 7:
             arma_seleccionada = input("Ingrese una arma o 0 para finalizar: ")
 
 
             if arma_seleccionada==0:
                 break
-           # elif arma_seleccionada in #lista de armas
-           #     armas_utilizar.append(arma_seleccionada)
-           #     n += 1
+            elif arma_seleccionada in self.weapons_obj:
+                armas_utilizar.append(arma_seleccionada)
+                n += 1
             else:
                 print("Arma inválida. Intente nuevamente.")
 
+        integrantes_mision=[]
+        m=0
 
-            integrantes_mision=[]
-            m=0
-
-
-        while n<7:
+        while m<7:
             integrante_seleccionado= input("Ingrese un integrante de la misión o 0 para finalizar: ")
-
-
             if integrante_seleccionado==0:
                 break
-            #elif integrante_seleccionado in #lista de people
-             #   integrantes_mision.append(integrante_seleccionado)
-               # m+=1
+            elif integrante_seleccionado in self.characters_obj:
+                integrantes_mision.append(integrante_seleccionado)
+                m+=1
             else:
                 print("Integrante inválido. Intente nuevamente")
 

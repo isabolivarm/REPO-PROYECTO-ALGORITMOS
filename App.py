@@ -43,27 +43,6 @@ class App:
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     def crear_mision(self):
         print("Creemos una nueva misión")
         nombre_mision=input("Ingrese el nombre de la mision: ")

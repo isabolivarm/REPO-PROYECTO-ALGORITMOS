@@ -8,14 +8,9 @@ from Film import Film
 import csv
 from Weapons import Weapon
 
-file_path="C:\Users\Gaby_\Downloads\starwars.zip\csv"
-with open (file_path,"r") as file:
-    csv_reader=csv.reader(file)
-    header=next(csv_reader)
-    data=[row for row in csv_reader]
 
-print("Encabezado:",header)
-print("Primeras filas de datos: ",data[:5])
+
+
 class App:
     film_obj=[]
     planets_obj=[]
@@ -40,11 +35,6 @@ class App:
             print(f"Opening Crawl: {film.opening_crawl}")
             print(f"Director: {film.director}")
             print("---")
-
-
-    def transformar_weapons(self): #TENGO QUE REVISAR ESTO
-        for weapon_name in self.lista_csv_weapons:
-            self.weapons_obj.append(Weapon(weapon_name))
 
 
 

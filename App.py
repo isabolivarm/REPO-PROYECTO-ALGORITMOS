@@ -11,6 +11,7 @@ from Weapons import Weapon
 
 
 
+
 class App:
     film_obj=[]
     planets_obj=[]
@@ -106,7 +107,9 @@ class App:
         print("7. Crear una misión")
         opcion_menu=int(input("-->"))
 
-    
+    def transformar_weapons(self): #TENGO QUE REVISAR ESTO
+        for weapon_name in self.lista_csv_weapons:
+            self.weapons_obj.append(Weapon(weapon_name))
 
 
 

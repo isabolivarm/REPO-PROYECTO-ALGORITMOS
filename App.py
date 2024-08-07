@@ -6,6 +6,7 @@ from ApiPeople import cargar_api
 from ApiFilms import cargar_api
 from Film import Film
 import csv
+from Weapons import Weapon
 
 
 
@@ -34,6 +35,7 @@ class App:
             print(f"Opening Crawl: {film.opening_crawl}")
             print(f"Director: {film.director}")
             print("---")
+
 
 
     def crear_mision(self):
@@ -84,6 +86,13 @@ class App:
         print('Mision creada con exito')
         
         i+=1
+
+
+
+    
+
+
+
 
     
     def menu():

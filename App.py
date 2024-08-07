@@ -6,6 +6,7 @@ from ApiPeople import cargar_api
 from ApiFilms import cargar_api
 from Film import Film
 import csv
+from Weapons import Weapon
 
 file_path="C:\Users\Gaby_\Downloads\starwars.zip\csv"
 with open (file_path,"r") as file:
@@ -41,7 +42,9 @@ class App:
             print("---")
 
 
-
+    def transformar_weapons(self): #TENGO QUE REVISAR ESTO
+        for weapon_name in self.lista_csv_weapons:
+            self.weapons_obj.append(Weapon(weapon_name))
 
 
 
@@ -93,6 +96,13 @@ class App:
         print('Mision creada con exito')
         
         i+=1
+
+
+
+    
+
+
+
 
     
     def menu():

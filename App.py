@@ -41,7 +41,7 @@ class App:
     def crear_mision(self):
         i=0
         while i<5:
-            print("Creemos una nueva misión")
+            print("Creemos una nueva misión!")
 
             while True:
                 nombre_mision=input("Ingrese el nombre de la mision: ")
@@ -87,7 +87,7 @@ class App:
         
         i+=1
 
-
+    
 
     
 

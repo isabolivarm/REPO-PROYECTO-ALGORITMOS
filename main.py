@@ -1,6 +1,8 @@
 from App import App
-import csv
 
-def main(self):
-   None
+
+def main():
+    app=App()
+    app.start()
+
 main()

@@ -7,7 +7,7 @@ from ApiFilms import cargar_api
 from Film import Film
 from Weapon import Weapon
 from Starship import Starship
-
+import csv
 
 class App:
     film_obj=[]
@@ -144,6 +144,7 @@ class App:
         print("Integrantes de la misión:")
         for integrante in mision_seleccionada['integrantes_mision']:
             print(f"- {integrante}")
+
 
 
 

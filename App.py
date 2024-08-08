@@ -62,6 +62,7 @@ class App:
 
 
     def crear_mision(self):
+        misiones_obj=[]
         i=0
         while i<6:
             print("Creemos una nueva misión")
@@ -107,7 +108,7 @@ class App:
                         print("Integrante inválido. Intente nuevamente")
             
          
-   
+                
                 mision = {'nombre': nombre_mision, 'planeta_destino': planeta_destino, 'nave_utilizar': nave_utilizar,'armas_utilizar': armas_utilizar, 'integrantes_mision': integrantes_mision}
                 self.misiones.append(mision)
                 
@@ -117,6 +118,30 @@ class App:
         
         i+=1
 
+    def visualizar_mision(self):
+        if not self.misiones:
+            print("No hay misiones creadas")
+            return
+
+        print("Misiones creadas:")
+        for i, mision in enumerate(self.misiones):
+            print(f"{i+1}. {mision['nombre']}")
+
+        seleccion = int(input("Ingrese el número de la misión que desea visualizar: "))
+        mision_seleccionada = self.misiones[seleccion - 1]
+
+        print("\nDetalles de la misión:")
+        print(f"Nombre: {mision_seleccionada['nombre']}")
+        print(f"Planeta destino: {mision_seleccionada['planeta_destino']}")
+        print(f"Nave utilizada: {mision_seleccionada['nave_utilizar']}")
+
+        print("\nArmas utilizadas:")
+        for arma in mision_seleccionada['armas_utilizar']:
+            print(f"- {arma}")
+
+        print("\nIntegrantes de la misión:")
+        for integrante in mision_seleccionada['integrantes_mision']:
+            print(f"- {integrante}")
 
         
 

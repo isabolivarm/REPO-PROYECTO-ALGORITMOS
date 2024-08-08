@@ -5,8 +5,8 @@ from ApiPlanets import cargar_planetas
 from ApiPeople import cargar_api
 from ApiFilms import cargar_api
 from Film import Film
-from Weapons import Weapon
-from Starships import Starships
+from Weapon import Weapon
+from Starship import Starship
 
 
 class App:
@@ -18,7 +18,6 @@ class App:
     species_obj=[]
     vehicles_obj=[]
     
-
     def start(self):
         self.crear_films()
         

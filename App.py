@@ -9,8 +9,6 @@ from Weapons import Weapon
 from Starships import Starships
 
 
-
-
 class App:
     film_obj=[]
     planets_obj=[]

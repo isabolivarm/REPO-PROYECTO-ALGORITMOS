@@ -5,8 +5,8 @@ from ApiPlanets import cargar_planetas
 from ApiPeople import cargar_api
 from ApiFilms import cargar_api
 from Film import Film
-from Weapons import Weapon
-from Starships import Starships
+from Weapon import Weapon
+from Starship import Starship
 
 
 class App:
@@ -18,7 +18,6 @@ class App:
     species_obj=[]
     vehicles_obj=[]
     
-
     def start(self):
         self.crear_films()
         
@@ -112,40 +111,29 @@ class App:
                 
                         
         print('Mision creada con exito')
-
         
         i+=1
 
-    def visualizar_mision(self):
-        if not self.misiones:
-            print("No hay misiones creadas")
-            return
 
-        print("Misiones creadas:")
-        for i, mision in enumerate(self.misiones):
-            print(f"{i+1}. {mision['nombre']}")
 
-        seleccion = int(input("Ingrese el número de la misión que desea visualizar: "))
-        mision_seleccionada = self.misiones[seleccion - 1]
+    
 
-        print("\nDetalles de la misión:")
-        print(f"Nombre: {mision_seleccionada['nombre']}")
-        print(f"Planeta destino: {mision_seleccionada['planeta_destino']}")
-        print(f"Nave utilizada: {mision_seleccionada['nave_utilizar']}")
 
-        print("\nArmas utilizadas:")
-        for arma in mision_seleccionada['armas_utilizar']:
-            print(f"- {arma}")
 
-        print("\nIntegrantes de la misión:")
-        for integrante in mision_seleccionada['integrantes_mision']:
-            print(f"- {integrante}")
 
-        
+    
+    def menu():
+        print("Ingrese el número de opción que desea explorar")
+        print("1. Explorar las películas de la saga")
+        print("2. Explorar las especies de seres vivos")
+        print("3. Buscar un personaje")
+        print("4. Crear un gráfico de personajes según su planeta de nacimiento")
+        print("5. Crear un gráfico para comparar las naves")
+        print("6. Conocer las estadísticas de las naves")
+        print("7. Crear una misión")
+        opcion_menu=int(input("-->"))
 
-    def transformar_weapons(self): #TENGO QUE REVISAR ESTO
-        for weapon_name in self.lista_csv_weapons:
-            self.weapons_obj.append(Weapon(weapon_name))
+    
 
 
 

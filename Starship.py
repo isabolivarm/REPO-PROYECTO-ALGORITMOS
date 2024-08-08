@@ -3,7 +3,7 @@ import statistics
 import tabulate
 
 
-class Starships:
+class Starship:
     def abrir_naves():
         with open("starships.csv", "r") as archivo_starships:
             reader = csv.reader(archivo_starships)

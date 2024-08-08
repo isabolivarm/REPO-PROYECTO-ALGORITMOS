@@ -7,7 +7,7 @@ from ApiFilms import cargar_api
 from Film import Film
 from Weapon import Weapon
 from Starship import Starship
-
+import csv
 
 class App:
     film_obj=[]
@@ -122,6 +122,19 @@ class App:
         
         i+=1
 
+    def transformar_weapons(self): #TENGO QUE REVISAR ESTO
+            for weapon_name in self.lista_csv_weapons:
+                self.weapons_obj.append(Weapon(weapon_name))
+
+
+
+    def abrir_characters(self):
+        with open('characters.csv', 'r') as csv_characters:
+            reader = csv.reader(csv_characters)
+            data = list(reader) 
+        dict_characters = {row[1]: row[11] for row in data[1:]}  
+        return dict_characters
+ 
 
 
     

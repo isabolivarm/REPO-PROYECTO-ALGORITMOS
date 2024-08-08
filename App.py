@@ -5,8 +5,8 @@ from ApiPlanets import cargar_planetas
 from ApiPeople import cargar_api
 from ApiFilms import cargar_api
 from Film import Film
-from Weapons import Weapon
-
+from Weapon import Weapon
+from Starship import Starship
 
 
 class App:
@@ -18,7 +18,6 @@ class App:
     species_obj=[]
     vehicles_obj=[]
     
-
     def start(self):
         print("hola")
         self.crear_films()
@@ -68,6 +67,7 @@ class App:
 
 
     def crear_mision(self):
+        misiones_obj=[]
         i=0
         while i<6:
             print("Creemos una nueva misión")
@@ -113,22 +113,20 @@ class App:
                         print("Integrante inválido. Intente nuevamente")
             
          
-   
+                
                 mision = {'nombre': nombre_mision, 'planeta_destino': planeta_destino, 'nave_utilizar': nave_utilizar,'armas_utilizar': armas_utilizar, 'integrantes_mision': integrantes_mision}
                 self.misiones.append(mision)
                 
                         
         print('Mision creada con exito')
-
         
         i+=1
 
 
-        
 
-    def transformar_weapons(self): #TENGO QUE REVISAR ESTO
-        for weapon_name in self.lista_csv_weapons:
-            self.weapons_obj.append(Weapon(weapon_name))
+    
+
+    
 
 
 

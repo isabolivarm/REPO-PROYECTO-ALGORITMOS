@@ -1,4 +1,4 @@
-id,name,species,gender,height,weight,hair_color,eye_color,skin_color,year_born,homeworld,year_died,description
+clumsyid,name,species,gender,height,weight,hair_color,eye_color,skin_color,year_born,homeworld,year_died,description
 1,Luke Skywalker,Human,Male,1.72,77.0,Blond,Blue,Light,19,Tatooine,34,The main protagonist of the original trilogy.
 2,Leia Organa,Human,Female,1.5,49.0,Brown,Brown,Light,19,Alderaan,35,A leader in the Rebel Alliance and twin sister of Luke Skywalker.
 3,Darth Vader,Human,Male,2.02,136.0,None,Yellow,Pale,41,Tatooine,4,The Sith Lord formerly known as Anakin Skywalker.

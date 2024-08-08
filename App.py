@@ -63,7 +63,7 @@ class App:
 
     def crear_mision(self):
         i=0
-        while i<5:
+        while i<6:
             print("Creemos una nueva misión")
 
             while True:
@@ -105,8 +105,15 @@ class App:
                         m+=1
                     else:
                         print("Integrante inválido. Intente nuevamente")
+            
+         
+   
+                mision = {'nombre': nombre_mision, 'planeta_destino': planeta_destino, 'nave_utilizar': nave_utilizar,'armas_utilizar': armas_utilizar, 'integrantes_mision': integrantes_mision}
+                self.misiones.append(mision)
+                
                         
         print('Mision creada con exito')
+
         
         i+=1
 

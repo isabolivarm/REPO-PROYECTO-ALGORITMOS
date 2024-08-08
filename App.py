@@ -5,8 +5,8 @@ from ApiPlanets import cargar_planetas
 from ApiPeople import cargar_api
 from ApiFilms import cargar_api
 from Film import Film
-import csv
 from Weapons import Weapon
+from Starships import Starships
 
 
 
@@ -20,6 +20,29 @@ class App:
     species_obj=[]
     vehicles_obj=[]
     
+
+    def start(self):
+        self.crear_films()
+        
+        print("Bienvenidos a esta aventura")
+        while True:
+            opcion_menu=input("""Ingrese el número de opción que desea explorar
+            1. Explorar las películas de la saga
+            2. Explorar las especies de seres vivos
+            3. Buscar un personaje
+            4. Crear un gráfico de personajes según su planeta de nacimiento
+            5. Crear un gráfico para comparar las naves
+            6. Conocer las estadísticas de las naves
+            7. Crear una misión
+            --> """)
+
+            if opcion_menu =="1":
+                 self.print_films()
+                
+            elif opcion_menu=="2":
+                print("hola")
+
+        
 
 
     def crear_films(self):
@@ -39,9 +62,10 @@ class App:
 
 
     def crear_mision(self):
+        misiones_obj=[]
         i=0
-        while i<5:
-            print("Creemos una nueva misión!")
+        while i<6:
+            print("Creemos una nueva misión")
 
             while True:
                 nombre_mision=input("Ingrese el nombre de la mision: ")
@@ -82,12 +106,18 @@ class App:
                         m+=1
                     else:
                         print("Integrante inválido. Intente nuevamente")
+            
+         
+                
+                mision = {'nombre': nombre_mision, 'planeta_destino': planeta_destino, 'nave_utilizar': nave_utilizar,'armas_utilizar': armas_utilizar, 'integrantes_mision': integrantes_mision}
+                self.misiones.append(mision)
+                
                         
         print('Mision creada con exito')
         
         i+=1
 
-    
+
 
     
 

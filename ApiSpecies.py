@@ -41,4 +41,3 @@ def cargar_especies():
                             
     return lista_especies
 
-cargar_especies()

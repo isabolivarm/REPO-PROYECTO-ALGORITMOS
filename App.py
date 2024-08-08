@@ -5,7 +5,6 @@ from ApiPlanets import cargar_planetas
 from ApiPeople import cargar_api
 from ApiFilms import cargar_api
 from Film import Film
-import csv
 from Weapons import Weapon
 
 
@@ -22,6 +21,23 @@ class App:
     vehicles_obj=[]
     
 
+    def start(self):
+        self.crear_films()
+        
+        print("Bienvenidos a esta aventura")
+        while True:
+            print("Ingrese el número de opción que desea explorar")
+            print("1. Explorar las películas de la saga")
+            print("2. Explorar las especies de seres vivos")
+            print("3. Buscar un personaje")
+            print("4. Crear un gráfico de personajes según su planeta de nacimiento")
+            print("5. Crear un gráfico para comparar las naves")
+            print("6. Conocer las estadísticas de las naves")
+            print("7. Crear una misión")
+            opcion_menu=int(input("-->"))
+
+            if opcion_menu == "1":
+                self.print_films()
 
     def crear_films(self):
         dbfilms=cargar_api("https://www.swapi.tech/api/films/")
@@ -89,23 +105,7 @@ class App:
         i+=1
 
 
-
-    
-
-
-
-
-    
-    def menu():
-        print("Ingrese el número de opción que desea explorar")
-        print("1. Explorar las películas de la saga")
-        print("2. Explorar las especies de seres vivos")
-        print("3. Buscar un personaje")
-        print("4. Crear un gráfico de personajes según su planeta de nacimiento")
-        print("5. Crear un gráfico para comparar las naves")
-        print("6. Conocer las estadísticas de las naves")
-        print("7. Crear una misión")
-        opcion_menu=int(input("-->"))
+        
 
     def transformar_weapons(self): #TENGO QUE REVISAR ESTO
         for weapon_name in self.lista_csv_weapons:

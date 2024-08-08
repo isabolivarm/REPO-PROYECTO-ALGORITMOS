@@ -17,6 +17,7 @@ class App:
     weapons_obj=[]
     species_obj=[]
     vehicles_obj=[]
+    misiones=[]
     
     def start(self):
         print("hola")
@@ -67,7 +68,6 @@ class App:
 
 
     def crear_mision(self):
-        misiones_obj=[]
         i=0
         while i<6:
             print("Creemos una nueva misión")
@@ -121,6 +121,29 @@ class App:
         print('Mision creada con exito')
         
         i+=1
+
+    def ver_mision(self):
+        if not self.misiones:
+            print("Aun no se han creado misiones")
+            return
+        print("Misiones:")
+        for i, mision in enumerate(f"{self.misiones}"):
+            print(f"{i+1}.- {mision["nombre"]}")
+            
+        seleccionar_mision=int(input("Seleccione una mision para ver sus detalles"))
+        mision_seleccionada=self.misiones[seleccionar_mision-1]
+        print ("Detalles de la mision: ")
+        print(f"Nombre: {mision_seleccionada["nombre"]}")
+        print(f"Planeta destino: {mision_seleccionada['planeta_destino']}")
+        print(f"Nave utilizada: {mision_seleccionada['nave_utilizar']}")
+
+        print("Armas utilizadas:")
+        for arma in mision_seleccionada['armas_utilizar']:
+            print(f"- {arma}")
+
+        print("Integrantes de la misión:")
+        for integrante in mision_seleccionada['integrantes_mision']:
+            print(f"- {integrante}")
 
 
 

@@ -63,7 +63,7 @@ class App:
         
 
 
-  #def crear_films(self):
+#def crear_films(self):
   #      dbfilms=cargar_api("https://www.swapi.tech/api/films/")
  #       for film in dbfilms:
    #         self.film_obj.append(Film(film["title"]),(film["episode_id"]),(film["release_date"]),(film["opening_crawl"]),(film["director"]) )

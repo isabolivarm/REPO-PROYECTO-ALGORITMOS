@@ -62,19 +62,6 @@ class App:
                 break
         
 
-
-    def crear_films(self):
-        dbfilms=cargar_api("https://www.swapi.tech/api/films/")
-        for film in dbfilms:
-          self.film_obj.append(Film(film["title"]),(film["episode_id"]),(film["release_date"]),(film["opening_crawl"]),(film["director"]) )
-
-
-  #  def crear_films(self):
-   #     self.film_obj = []  
-    #    dbfilms = cargar_api("https://www.swapi.tech/api/films/")
-    #    for film in dbfilms:
-    #        self.film_obj.append(Film(**film))
-
     def print_films(self):
         for film in self.film_obj:
             print(f"Titulo: {film.title}")

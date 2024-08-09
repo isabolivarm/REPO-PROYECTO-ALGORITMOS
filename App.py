@@ -228,9 +228,9 @@ class App:
                 weapons = []
                 with open('weapons.csv', 'r') as csv_file:
                     reader = csv.reader(csv_file)
-                    next(reader)  # saltar la fila de headers
+                    next(reader) 
                     for row in reader:
-                        weapons.append(row[1])  # agregar solo el nombre de la arma
+                        weapons.append(row[1])  
 
                 print("Armas disponibles:")
                 for i, weapon in enumerate(weapons):

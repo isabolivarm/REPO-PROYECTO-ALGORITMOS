@@ -190,8 +190,8 @@ class App:
 
 
     def crear_mision(self):
-        i=0
-        while i<6:
+        num_misiones = 0
+        while num_misiones < 5:
             print("Creemos una nueva misión")
             
             while True:
@@ -269,11 +269,12 @@ class App:
                 
                     mision = Mision(nombre_mision, planeta_destino, nave_utilizar, armas_utilizar, integrantes_mision)
                     self.misiones_obj.append(mision)
-                
-                        
-        print('Mision creada con exito')
+                print('mision creada con exito')
+                num_misiones += 1
         
-        i+=1
+                respuesta = input("¿Desea crear otra misión? (s/n): ")
+                if respuesta.lower() != 's':
+                    break
 
     def ver_mision(self):
         if not self.misiones_obj:

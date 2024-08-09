@@ -1,12 +1,12 @@
 from ApiVehicles import cargar_api
 from ApiStarships import cargar_api
-from ApiSpecies import cargar_especies
-from ApiPlanets import cargar_planetas
+#from ApiSpecies import cargar_especies
+##from ApiPlanets import cargar_planetas
 from ApiPeople import cargar_api
 from ApiFilms import cargar_api
 from Film import Film
 from Weapon import Weapon
-from Starship import Starship
+#from Starship import Starship
 import csv
 import matplotlib.pyplot as plt
 
@@ -63,17 +63,6 @@ class App:
         
 
 
-#def crear_films(self):
-  #      dbfilms=cargar_api("https://www.swapi.tech/api/films/")
- #       for film in dbfilms:
-   #         self.film_obj.append(Film(film["title"]),(film["episode_id"]),(film["release_date"]),(film["opening_crawl"]),(film["director"]) )
-
-
-    def crear_films(self):
-        self.film_obj = []  
-        dbfilms = cargar_api("https://www.swapi.tech/api/films/")
-        for film in dbfilms:
-            self.film_obj.append(Film(**film))
 
     def print_films(self):
         for film in self.film_obj:

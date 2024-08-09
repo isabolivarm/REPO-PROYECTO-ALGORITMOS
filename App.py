@@ -1,4 +1,3 @@
-import matplotlib.pyplot as plt
 from ApiVehicles import cargar_api
 from ApiStarships import cargar_api
 from ApiSpecies import cargar_especies
@@ -8,9 +7,10 @@ from ApiFilms import cargar_api
 from Film import Film
 from Weapon import Weapon
 from Starship import Starship
+import csv
+import matplotlib.pyplot as plt
 import tabulate
 import statistics
-import csv
 
 
 class App:

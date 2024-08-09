@@ -1,12 +1,12 @@
 from ApiVehicles import cargar_api
 from ApiStarships import cargar_api
-from ApiSpecies import cargar_especies
-from ApiPlanets import cargar_planetas
+#from ApiSpecies import cargar_especies
+##from ApiPlanets import cargar_planetas
 from ApiPeople import cargar_api
 from ApiFilms import cargar_api
 from Film import Film
 from Weapon import Weapon
-from Starship import Starship
+#from Starship import Starship
 import csv
 import matplotlib.pyplot as plt
 
@@ -34,6 +34,7 @@ class App:
             5. Crear un gráfico para comparar las naves
             6. Conocer las estadísticas de las naves
             7. Crear una misión
+            8. Salir
             --> """)
 
             if opcion_menu =="1":
@@ -41,7 +42,24 @@ class App:
                 
             elif opcion_menu=="2":
                 print("hola")
+                
+            elif opcion_menu=="3":
+                print("cambiar esto")
+            
+            elif opcion_menu=="4":
+                print("cambiar esto")
+                
+            elif opcion_menu=="5":
+                print("cambiar esto")
+            
+            elif opcion_menu=="6":
+                print("cambiar esto")
 
+            elif opcion_menu=="7":
+                print("cambiar esto")
+
+            elif opcion_menu=="8":
+                break
         
 
 

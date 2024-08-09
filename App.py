@@ -81,7 +81,7 @@ class App:
                 self.ver_mision()
             
             elif opcion_menu=="11":
-                print("Falta de isa")
+                self.guardar_misiones()
             
             elif opcion_menu=="12":
                 print("falta de gaby")
@@ -375,6 +375,15 @@ class App:
                 respuesta = input("¿Desea crear otra misión? (s/n): ")
                 if respuesta.lower() != 's':
                     break
+
+    def guardar_misiones(self):
+        with open('misiones.txt', 'w') as archivo:
+            for mision in self.misiones_obj:
+                archivo.write(f"Misión {mision.nombre_mision}:\n")
+                archivo.write(f"  Planeta destino: {mision.planeta_destino}\n")
+                archivo.write(f"  Nave utilizada: {mision.nave_utilizar}\n")
+                archivo.write(f"  Armas utilizadas: {', '.join(mision.armas_utilizar)}\n")
+                archivo.write(f"  Integrantes: {', '.join(mision.integrantes_mision)}\n\n")
 
     def ver_mision(self):
         if not self.misiones_obj:

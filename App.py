@@ -1,15 +1,18 @@
 from ApiVehicles import cargar_api
 from ApiStarships import cargar_api
 #from ApiSpecies import cargar_especies
-##from ApiPlanets import cargar_planetas
+#from ApiPlanets import cargar_planetas
 from ApiPeople import cargar_api
 from ApiFilms import cargar_api
 from Film import Film
 from Weapon import Weapon
-#from Starship import Starship
+from Starship import Starship
 import csv
 import matplotlib.pyplot as plt
+import tabulate
+import statistics
 from Mision import Mision
+
 class App:
     film_obj=[]
     planets_obj=[]
@@ -21,44 +24,65 @@ class App:
     misiones_obj=[]
     
     def start(self):
-        print("hola")
         self.crear_films()
+        self.cargar_starships()
         
         print("Bienvenidos a esta aventura")
         while True:
             opcion_menu=input("""Ingrese el número de opción que desea explorar
             1. Explorar las películas de la saga
             2. Explorar las especies de seres vivos
-            3. Buscar un personaje
-            4. Crear un gráfico de personajes según su planeta de nacimiento
-            5. Crear un gráfico para comparar las naves
-            6. Conocer las estadísticas de las naves
-            7. Crear una misión
-            8. Salir
+            3. Visualizar planetas
+            4. Buscar un personaje
+            5. Crear un gráfico de personajes según su planeta de nacimiento
+            6. Crear un gráfico para comparar las naves
+            7. Conocer las estadísticas de las naves
+            8. Crear una misión
+            9. Modificar una mision
+            10. Visualizar mision
+            11. Guardar misiones previamente creadas en archivo de texto
+            12. Cargar misiones previamente creadas en memoria                 
+            13. Salir
             --> """)
 
             if opcion_menu =="1":
                  self.print_films()
                 
             elif opcion_menu=="2":
-                print("hola")
+                print("Falta de Oriana")
                 
             elif opcion_menu=="3":
-                print("cambiar esto")
+                print("Falta de Oriana")
             
             elif opcion_menu=="4":
                 print("cambiar esto")
                 
             elif opcion_menu=="5":
-                print("cambiar esto")
+                dict_characters=self.abrir_characters()
+                self.graficos_personajes_planetas(dict_characters)
             
             elif opcion_menu=="6":
-                print("cambiar esto")
+               print("Falta de oriana")
 
             elif opcion_menu=="7":
-                print("cambiar esto")
-
+                self.estadisticas_naves()
+                
             elif opcion_menu=="8":
+                self.crear_mision()
+            
+            elif opcion_menu=="9":
+                print("falta de oriana")
+            
+            elif opcion_menu=="10":
+                self.ver_mision()
+            
+            elif opcion_menu=="11":
+                print("Falta de isa")
+            
+            elif opcion_menu=="12":
+                print("falta de gaby")
+
+            elif opcion_menu=="13":
                 break
         
 
@@ -82,6 +106,85 @@ class App:
             print(f"Director: {film.director}")
             print("---")
 
+    def cargar_starships(self):
+        self.starships_obj = []
+        with open("starships.csv", "r") as archivo_starships:
+            reader = csv.reader(archivo_starships)
+            next(reader)
+            for row in reader:
+                nombre = row[1]
+                if row[11] == '':
+                    hiperimpulsor = 0.0
+                else:
+                    hiperimpulsor = float(row[11])
+
+                if row[12] == '':
+                    mglt = 0.0
+                else:
+                    mglt = float(row[12])
+
+                if row[6] == '':
+                    velocidad_max_atm = 0.0
+                else:
+                    velocidad_max_atm = float(row[6])
+
+                if row[4] == '':
+                    costo_creditos = 0.0
+                else:
+                    costo_creditos = float(row[4])
+                self.starships_obj.append(Starship(nombre, hiperimpulsor, mglt, velocidad_max_atm, costo_creditos))
+
+
+    def estadisticas_naves(self):
+        hiper_impulsores = []
+        mglt = []
+        velocidad_maxima = []
+        costo_credito = []
+        for starship in self.starships_obj:
+            hiper_impulsores.append(starship.hiperimpulsor)
+            mglt.append(starship.mglt)
+            velocidad_maxima.append(starship.velocidad_max_atm)
+            costo_credito.append(starship.costo_creditos)
+
+        estadisticas_starships = {
+            "Hiperimpulsor": {
+                "Promedio": statistics.mean(hiper_impulsores),
+                "Moda": statistics.mode(hiper_impulsores),
+                "Máximo": max(hiper_impulsores),
+                "Mínimo": min(hiper_impulsores)
+            },
+            "MGLT": {
+                "Promedio": statistics.mean(mglt),
+                "Moda": statistics.mode(mglt),
+                "Máximo": max(mglt),
+                "Mínimo": min(mglt)
+            },
+            "Velocidad máxima en la atmósfera": {
+                "Promedio": statistics.mean(velocidad_maxima),
+                "Moda": statistics.mode(velocidad_maxima),
+                "Máximo": max(velocidad_maxima),
+                "Mínimo": min(velocidad_maxima)
+            },
+            "Costo en créditos": {
+                "Promedio": statistics.mean(costo_credito),
+                "Moda": statistics.mode(costo_credito),
+                "Máximo": max(costo_credito),
+                "Mínimo": min(costo_credito)
+            }
+        }
+
+        filas = []
+        estadisticas_nombres = ["Promedio", "Moda", "Máximo", "Mínimo"]
+        for nombre, stats in estadisticas_starships.items():
+            fila = [nombre]
+            for stat in estadisticas_nombres:
+                fila.append(stats[stat])
+            filas.append(fila)
+
+        headers = ["Estadística", "Promedio", "Moda", "Máximo", "Mínimo"]
+        print(tabulate.tabulate(filas, headers=headers, tablefmt="grid"))
+
+  
 
 
     def crear_mision(self):
@@ -168,14 +271,14 @@ class App:
 
 
 
-    def abrir_characters():
+    def abrir_characters(self):
         with open('characters.csv', 'r') as csv_characters:
             reader = csv.reader(csv_characters)
             data = list(reader) 
         dict_characters = {row[1]: row[10] for row in data[1:]}  
         return dict_characters
 
-    def graficos_personajes_planetas(dict_characters):
+    def graficos_personajes_planetas(self,dict_characters):
         planetas = {}
         for character, planeta in dict_characters.items():
             if planeta in planetas: 
@@ -190,8 +293,7 @@ class App:
         plt.xticks(rotation=90)  
         plt.show()
 
-    dict_characters = abrir_characters()
-    graficos_personajes_planetas(dict_characters)
+    
         
 
     

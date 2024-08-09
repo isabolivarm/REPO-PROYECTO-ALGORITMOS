@@ -1,13 +1,14 @@
 from ApiVehicles import cargar_api
 from ApiStarships import cargar_api
-from ApiSpecies import cargar_especies
-from ApiPlanets import cargar_planetas
+#from ApiSpecies import cargar_especies
+##from ApiPlanets import cargar_planetas
 from ApiPeople import cargar_api
 from ApiFilms import cargar_api
 from Film import Film
 from Weapon import Weapon
-from Starship import Starship
-
+#from Starship import Starship
+import csv
+import matplotlib.pyplot as plt
 
 class App:
     film_obj=[]
@@ -17,8 +18,10 @@ class App:
     weapons_obj=[]
     species_obj=[]
     vehicles_obj=[]
+    misiones=[]
     
     def start(self):
+        print("hola")
         self.crear_films()
         
         print("Bienvenidos a esta aventura")
@@ -31,6 +34,7 @@ class App:
             5. Crear un gráfico para comparar las naves
             6. Conocer las estadísticas de las naves
             7. Crear una misión
+            8. Salir
             --> """)
 
             if opcion_menu =="1":
@@ -38,15 +42,26 @@ class App:
                 
             elif opcion_menu=="2":
                 print("hola")
+                
+            elif opcion_menu=="3":
+                print("cambiar esto")
+            
+            elif opcion_menu=="4":
+                print("cambiar esto")
+                
+            elif opcion_menu=="5":
+                print("cambiar esto")
+            
+            elif opcion_menu=="6":
+                print("cambiar esto")
 
+            elif opcion_menu=="7":
+                print("cambiar esto")
+
+            elif opcion_menu=="8":
+                break
         
 
-
-    def crear_films(self):
-        dbfilms=cargar_api("https://www.swapi.tech/api/films/")
-        for film in dbfilms:
-            self.film_obj.append(Film(film["title"]),(film["episode_id"]),(film["release_date"]),(film["opening_crawl"]),(film["director"]) )
-        
     def print_films(self):
         for film in self.film_obj:
             print(f"Titulo: {film.title}")
@@ -59,7 +74,6 @@ class App:
 
 
     def crear_mision(self):
-        misiones_obj=[]
         i=0
         while i<6:
             print("Creemos una nueva misión")
@@ -114,24 +128,60 @@ class App:
         
         i+=1
 
+    def ver_mision(self):
+        if not self.misiones:
+            print("Aun no se han creado misiones")
+            return
+        print("Misiones:")
+        for i, mision in enumerate(f"{self.misiones}"):
+            print(f"{i+1}.- {mision["nombre"]}")
+            
+        seleccionar_mision=int(input("Seleccione una mision para ver sus detalles"))
+        mision_seleccionada=self.misiones[seleccionar_mision-1]
+        print ("Detalles de la mision: ")
+        print(f"Nombre: {mision_seleccionada["nombre"]}")
+        print(f"Planeta destino: {mision_seleccionada['planeta_destino']}")
+        print(f"Nave utilizada: {mision_seleccionada['nave_utilizar']}")
 
+        print("Armas utilizadas:")
+        for arma in mision_seleccionada['armas_utilizar']:
+            print(f"- {arma}")
 
+        print("Integrantes de la misión:")
+        for integrante in mision_seleccionada['integrantes_mision']:
+            print(f"- {integrante}")
     
+    def transformar_weapons(self): #TENGO QUE REVISAR ESTO
+            for weapon_name in self.lista_csv_weapons:
+                self.weapons_obj.append(Weapon(weapon_name))
 
 
 
+    def abrir_characters():
+        with open('characters.csv', 'r') as csv_characters:
+            reader = csv.reader(csv_characters)
+            data = list(reader) 
+        dict_characters = {row[1]: row[10] for row in data[1:]}  
+        return dict_characters
 
-    
-    def menu():
-        print("Ingrese el número de opción que desea explorar")
-        print("1. Explorar las películas de la saga")
-        print("2. Explorar las especies de seres vivos")
-        print("3. Buscar un personaje")
-        print("4. Crear un gráfico de personajes según su planeta de nacimiento")
-        print("5. Crear un gráfico para comparar las naves")
-        print("6. Conocer las estadísticas de las naves")
-        print("7. Crear una misión")
-        opcion_menu=int(input("-->"))
+    def graficos_personajes_planetas(dict_characters):
+        planetas = {}
+        for character, planeta in dict_characters.items():
+            if planeta in planetas: 
+                planetas[planeta] += 1
+            else: 
+                planetas[planeta] = 1
+
+        plt.bar(planetas.keys(), planetas.values())
+        plt.xlabel("Planeta")
+        plt.ylabel("Cantidad de personajes")
+        plt.title("Cantidad de personajes por planeta")
+        plt.xticks(rotation=90)  
+        plt.show()
+
+    dict_characters = abrir_characters()
+    graficos_personajes_planetas(dict_characters)
+        
 
     
 

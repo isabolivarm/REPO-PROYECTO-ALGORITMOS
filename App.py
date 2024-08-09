@@ -1,7 +1,7 @@
 from ApiVehicles import cargar_api
 from ApiStarships import cargar_api
-from ApiSpecies import cargar_especies
-from ApiPlanets import cargar_planetas
+#from ApiSpecies import cargar_especies
+#from ApiPlanets import cargar_planetas
 from ApiPeople import cargar_api
 from ApiFilms import cargar_api
 from Film import Film
@@ -24,7 +24,6 @@ class App:
     misiones_obj=[]
     
     def start(self):
-        print("hola")
         self.crear_films()
         self.cargar_starships()
         
@@ -33,37 +32,57 @@ class App:
             opcion_menu=input("""Ingrese el número de opción que desea explorar
             1. Explorar las películas de la saga
             2. Explorar las especies de seres vivos
-            3. Buscar un personaje
-            4. Crear un gráfico de personajes según su planeta de nacimiento
-            5. Crear un gráfico para comparar las naves
-            6. Conocer las estadísticas de las naves
-            7. Crear una misión
-            8. Salir
+            3. Visualizar planetas
+            4. Buscar un personaje
+            5. Crear un gráfico de personajes según su planeta de nacimiento
+            6. Crear un gráfico para comparar las naves
+            7. Conocer las estadísticas de las naves
+            8. Crear una misión
+            9. Modificar una mision
+            10. Visualizar mision
+            11. Guardar misiones previamente creadas en archivo de texto
+            12. Cargar misiones previamente creadas en memoria                 
+            13. Salir
             --> """)
 
             if opcion_menu =="1":
                  self.print_films()
                 
             elif opcion_menu=="2":
-                print("hola")
+                print("Falta de Oriana")
                 
             elif opcion_menu=="3":
-                print("cambiar esto")
+                print("Falta de Oriana")
             
             elif opcion_menu=="4":
                 print("cambiar esto")
                 
             elif opcion_menu=="5":
-                dict_characters = self.abrir_characters()
+                dict_characters=self.abrir_characters()
                 self.graficos_personajes_planetas(dict_characters)
             
             elif opcion_menu=="6":
-               self.estadisticas_naves()
+               print("Falta de oriana")
 
             elif opcion_menu=="7":
-                print("cambiar esto")
-
+                self.estadisticas_naves()
+                
             elif opcion_menu=="8":
+                self.crear_mision()
+            
+            elif opcion_menu=="9":
+                print("falta de oriana")
+            
+            elif opcion_menu=="10":
+                self.ver_mision()
+            
+            elif opcion_menu=="11":
+                print("Falta de isa")
+            
+            elif opcion_menu=="12":
+                print("falta de gaby")
+
+            elif opcion_menu=="13":
                 break
         
 
@@ -252,14 +271,14 @@ class App:
 
 
 
-    def abrir_characters():
+    def abrir_characters(self):
         with open('characters.csv', 'r') as csv_characters:
             reader = csv.reader(csv_characters)
             data = list(reader) 
         dict_characters = {row[1]: row[10] for row in data[1:]}  
         return dict_characters
 
-    def graficos_personajes_planetas(dict_characters):
+    def graficos_personajes_planetas(self,dict_characters):
         planetas = {}
         for character, planeta in dict_characters.items():
             if planeta in planetas: 

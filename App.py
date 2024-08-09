@@ -24,6 +24,7 @@ class App:
     species_obj=[]
     vehicles_obj=[]
     misiones_obj=[]
+    personajes_obj=[]
    
     def start(self):
         self.crear_films()
@@ -191,7 +192,7 @@ class App:
                 naves=info["naves"],
                 vehiculos=info["vehiculos"]
             )
-            Personaje.personajes_obj.append(personaje_obj)
+            self.personajes_obj.append(personaje_obj)
             print("Nombre:", personaje_obj.nombre)
             print("Planeta de origen:", personaje_obj.planeta_origen)
             print("Episodios en los que interviene:", ", ".join([str(episodio) for episodio in personaje_obj.episodios]))

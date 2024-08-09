@@ -62,6 +62,16 @@ class App:
                 break
         
 
+    def crear_films(self):
+        self.film_obj = []  
+        dbfilms = cargar_api("https://www.swapi.tech/api/films/")
+        for film in dbfilms["result"]:
+            self.film_obj.append(Film(  
+                title=film["properties"]["title"],
+                episode_id=film["properties"]["episode_id"],
+                release_date=film["properties"]["release_date"],
+                opening_crawl=film["properties"]["opening_crawl"],
+                director=film["properties"]["director"]))
 
     def print_films(self):
         for film in self.film_obj:

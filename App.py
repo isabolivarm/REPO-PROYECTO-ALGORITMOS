@@ -184,54 +184,87 @@ class App:
         headers = ["Estadística", "Promedio", "Moda", "Máximo", "Mínimo"]
         print(tabulate.tabulate(filas, headers=headers, tablefmt="grid"))
 
-  
+
+
+
 
 
     def crear_mision(self):
         i=0
         while i<6:
             print("Creemos una nueva misión")
-
+            
             while True:
                 nombre_mision=input("Ingrese el nombre de la mision: ")
-                planeta_destino = input("Ingrese el planeta destino: ")
-                while  planeta_destino not in self.planets_obj:
-                    print("Planeta inválido. Intente nuevamente")
-                    planeta_destino = input("Ingrese el planeta destino: ")
-                
-                nave_utilizar = input("Ingrese la nave a utilizar: ")  
-                while nave_utilizar not in self.spaceships_obj:
-                    print("Nave inválida. Intente nuevamente.")
-                    nave_utilizar = input("Ingrese la nave a utilizar: ")
+
+
+                planets = []
+                with open('planets.csv', 'r') as csv_file:
+                    reader = csv.reader(csv_file)
+                    next(reader)  
+                    for row in reader:
+                        planets.append(row[1]) 
+
+                    print("Planetas disponibles:")
+                    for i, planet in enumerate(planets):
+                        print(f"{i+1}. {planet}")
+
+                    planeta_destino = int(input("Ingrese el número del planeta que desea seleccionar: "))
+
+                starships = []
+                with open('starships.csv', 'r') as csv_file:
+                    reader = csv.reader(csv_file)
+                    next(reader)  
+                    for row in reader:
+                        starships.append(row[1]) 
+
+                    print("Naves disponibles:")
+                    for i, starship in enumerate(starships):
+                        print(f"{i+1}. {starship}")
+
+                    nave_utilizar = int(input("Ingrese el número de la nave que desea seleccionar: "))
+
+
+                weapons = []
+                with open('weapons.csv', 'r') as csv_file:
+                    reader = csv.reader(csv_file)
+                    next(reader)  # saltar la fila de headers
+                    for row in reader:
+                        weapons.append(row[1])  # agregar solo el nombre de la arma
+
+                print("Armas disponibles:")
+                for i, weapon in enumerate(weapons):
+                    print(f"{i+1}. {weapon}")
 
                 armas_utilizar = []
-                n = 0
-
-                while n < 7:
-                    arma_seleccionada = input("Ingrese una arma o 0 para finalizar: ")
-
-
-                    if arma_seleccionada==0:
+                while len(armas_utilizar) < 7:
+                    arma_seleccionada = int(input("Ingrese el número de la arma que desea seleccionar (o 0 para finalizar): "))
+                    if arma_seleccionada == 0:
                         break
-                    elif arma_seleccionada in self.weapons_obj:
-                        armas_utilizar.append(arma_seleccionada)
-                        n += 1
-                    else:
-                        print("Arma inválida. Intente nuevamente.")
+                    armas_utilizar.append(weapons[arma_seleccionada-1])
+                    print(f"Ha seleccionado: {armas_utilizar[-1]}")
 
-                integrantes_mision=[]
-                m=0
+                
+                characters = []
+                with open('characters.csv', 'r') as csv_file:
+                    reader = csv.reader(csv_file)
+                    next(reader) 
+                    for row in reader:
+                        characters.append(row[1])  
+                print("Personajes disponibles:")
+                for i, character in enumerate(characters):
+                    print(f"{i+1}. {character}")
 
-                while m<7:
-                    integrante_seleccionado= input("Ingrese un integrante de la misión o 0 para finalizar: ")
-                    if integrante_seleccionado==0:
+                integrantes_mision = []
+                while len(integrantes_mision) < 7:
+                    integrante_seleccionado = int(input("Ingrese el número del personaje que desea seleccionar (o 0 para finalizar): "))
+                    if integrante_seleccionado == 0:
                         break
-                    elif integrante_seleccionado in self.characters_obj:
-                        integrantes_mision.append(integrante_seleccionado)
-                        m+=1
-                    else:
-                        print("Integrante inválido. Intente nuevamente")
-            
+                    integrantes_mision.append(characters[integrante_seleccionado-1])
+                    print(f"Ha seleccionado: {integrantes_mision[-1]}")
+               
+
+
          
                 
                     mision = Mision(nombre_mision, planeta_destino, nave_utilizar, armas_utilizar, integrantes_mision)

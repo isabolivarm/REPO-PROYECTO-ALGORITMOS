@@ -9,7 +9,7 @@ from Weapon import Weapon
 #from Starship import Starship
 import csv
 import matplotlib.pyplot as plt
-
+from Mision import Mision
 class App:
     film_obj=[]
     planets_obj=[]
@@ -18,7 +18,7 @@ class App:
     weapons_obj=[]
     species_obj=[]
     vehicles_obj=[]
-    misiones=[]
+    misiones_obj=[]
     
     def start(self):
         print("hola")
@@ -131,8 +131,8 @@ class App:
             
          
                 
-                mision = {'nombre': nombre_mision, 'planeta_destino': planeta_destino, 'nave_utilizar': nave_utilizar,'armas_utilizar': armas_utilizar, 'integrantes_mision': integrantes_mision}
-                self.misiones.append(mision)
+                    mision = Mision(nombre_mision, planeta_destino, nave_utilizar, armas_utilizar, integrantes_mision)
+                    self.misiones_obj.append(mision)
                 
                         
         print('Mision creada con exito')
@@ -140,15 +140,15 @@ class App:
         i+=1
 
     def ver_mision(self):
-        if not self.misiones:
+        if not self.misiones_obj:
             print("Aun no se han creado misiones")
             return
         print("Misiones:")
-        for i, mision in enumerate(f"{self.misiones}"):
+        for i, mision in enumerate(f"{self.misiones_obj}"):
             print(f"{i+1}.- {mision["nombre"]}")
             
         seleccionar_mision=int(input("Seleccione una mision para ver sus detalles"))
-        mision_seleccionada=self.misiones[seleccionar_mision-1]
+        mision_seleccionada=self.misiones_obj[seleccionar_mision-1]
         print ("Detalles de la mision: ")
         print(f"Nombre: {mision_seleccionada["nombre"]}")
         print(f"Planeta destino: {mision_seleccionada['planeta_destino']}")

@@ -34,6 +34,7 @@ class App:
             5. Crear un gráfico para comparar las naves
             6. Conocer las estadísticas de las naves
             7. Crear una misión
+            8. Salir
             --> """)
 
             if opcion_menu =="1":
@@ -41,7 +42,24 @@ class App:
                 
             elif opcion_menu=="2":
                 print("hola")
+                
+            elif opcion_menu=="3":
+                print("cambiar esto")
+            
+            elif opcion_menu=="4":
+                print("cambiar esto")
+                
+            elif opcion_menu=="5":
+                print("cambiar esto")
+            
+            elif opcion_menu=="6":
+                print("cambiar esto")
 
+            elif opcion_menu=="7":
+                print("cambiar esto")
+
+            elif opcion_menu=="8":
+                break
         
 
 

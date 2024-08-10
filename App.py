@@ -144,40 +144,60 @@ class App:
         else:
             species_response = requests.get(species_urls[0])
             species_data = species_response.json()
-            especie = species_data["name"]
+            if "name" in species_data:
+                especie = species_data["name"]
 
         
         urls_naves = personaje["starships"]
         naves = []
         if not urls_naves:
-            buscar_naves=cargar_api("https://swapi.dev/api/starships/")
+            buscar_naves = cargar_api("https://swapi.dev/api/starships/")
+            encontrado = False
             for nave in buscar_naves["results"]:
                 for piloto in nave["pilots"]:
-                    if piloto==personaje["url"]:
-                       naves.append(nave["name"])
+                    if piloto == personaje["url"]:
+                        naves.append(nave["name"])
+                        encontrado = True
+                        break
+                if encontrado:
+                    break
+            if not encontrado:
+                naves.append("El xpersonaje no es piloto de ninguna nave")
         else:
             for url_nave in urls_naves:
                 datos_nave = cargar_api(url_nave)
-                naves.append(datos_nave["name"])
+                if "name" in datos_nave:
+                    naves.append(datos_nave["name"])
+
 
         urls_vehiculos = personaje["vehicles"]
         vehiculos = []
         if not urls_vehiculos:
+            print("El personaje no tiene vehículos asociados. Buscando en la lista de vehículos...")
             datos_vehiculo = cargar_api("https://swapi.dev/api/vehicles/")
+            encontrado = False
             while True:
                 for info_vehiculo in datos_vehiculo["results"]:
-                    vehiculos.append(info_vehiculo["name"])
-                    print(info_vehiculo) 
-                if not datos_vehiculo["next"]:
+                    if "pilots" in info_vehiculo:
+                        for piloto in info_vehiculo["pilots"]:
+                            if piloto == personaje["url"]:
+                                vehiculos.append(info_vehiculo["name"])
+                                encontrado = True
+                                break
+                if not datos_vehiculo["next"] or encontrado:
                     break
                 url_vehiculo = datos_vehiculo["next"]
+                datos_vehiculo = cargar_api(url_vehiculo)
+            if not encontrado:
+                print(f"El personaje no posee ningún vehículo.")
+                vehiculos = ["No tiene vehículos"]
         else:
             for url_vehiculo in urls_vehiculos:
                 respuesta_vehiculo = requests.get(url_vehiculo)
                 datos_vehiculo = respuesta_vehiculo.json()
                 if "name" in datos_vehiculo:
                     vehiculos.append(datos_vehiculo["name"])
-
+        
         return {
             "nombre": nombre,
             "planeta_origen": nombre_planeta,
@@ -214,7 +234,6 @@ class App:
 
 
 
-    
 
     def cargar_starships(self):
         self.starships_obj = []
@@ -393,7 +412,7 @@ class App:
     def guardar_misiones(self):
         with open('misiones.txt', 'w') as archivo:
             for mision in self.misiones_obj:
-                archivo.write(f"Misión {mision.nombre_mision}:\n")
+                archivo.write(f"Misión {mision.nombre}:\n")
                 archivo.write(f"  Planeta destino: {mision.planeta_destino}\n")
                 archivo.write(f"  Nave utilizada: {mision.nave_utilizar}\n")
                 archivo.write(f"  Armas utilizadas: {', '.join(mision.armas_utilizar)}\n")
@@ -410,13 +429,13 @@ class App:
                     if line.startswith("Misión "):
                         if mision:
                             misiones.append(Mision(
-                                nombre_mision=mision['nombre_mision'],
-                                planeta_destino=mision['planeta_destino'],
-                                nave_utilizar=mision['nave_utilizar'],
-                                armas_utilizar=mision['armas_utilizar'],
-                                integrantes_mision=mision['integrantes_mision']
+                                nombre=mision['nombre_mision'],
+                                planeta_destino=mision.get('planeta_destino', ''),
+                                nave_utilizar=mision.get('nave_utilizar', ''),
+                                armas_utilizar=mision.get('armas_utilizar', []),
+                                integrantes_mision=mision.get('integrantes_mision', [])
                             ))
-                            mision = {}
+                        mision = {}
                         mision['nombre_mision'] = line[7:]
                     elif line.startswith("  Planeta destino: "):
                         mision['planeta_destino'] = line[19:]
@@ -428,11 +447,11 @@ class App:
                         mision['integrantes_mision'] = [integrante.strip() for integrante in line[13:].split(',')]
                 if mision:
                     misiones.append(Mision(
-                        nombre_mision=mision['nombre_mision'],
-                        planeta_destino=mision['planeta_destino'],
-                        nave_utilizar=mision['nave_utilizar'],
-                        armas_utilizar=mision['armas_utilizar'],
-                        integrantes_mision=mision['integrantes_mision']
+                        nombre=mision.get('nombre_mision', ''),
+                        planeta_destino=mision.get('planeta_destino', ''),
+                        nave_utilizar=mision.get('nave_utilizar', ''),
+                        armas_utilizar=mision.get('armas_utilizar', []),
+                        integrantes_mision=mision.get('integrantes_mision', [])
                     ))
             self.misiones_obj = misiones
         except FileNotFoundError:
@@ -443,22 +462,22 @@ class App:
             print("Aun no se han creado misiones")
             return
         print("Misiones:")
-        for i, mision in enumerate(f"{self.misiones_obj}"):
-            print(f"{i+1}.- {mision["nombre"]}")
+        for i, mision in enumerate(self.misiones_obj):
+            print(f"{i+1}.- {mision.nombre}")
             
-        seleccionar_mision=int(input("Seleccione una mision para ver sus detalles"))
+        seleccionar_mision=int(input("Seleccione una mision para ver sus detalles--->"))
         mision_seleccionada=self.misiones_obj[seleccionar_mision-1]
         print ("Detalles de la mision: ")
-        print(f"Nombre: {mision_seleccionada["nombre"]}")
-        print(f"Planeta destino: {mision_seleccionada['planeta_destino']}")
-        print(f"Nave utilizada: {mision_seleccionada['nave_utilizar']}")
+        print(f"Nombre: {mision_seleccionada.nombre}")
+        print(f"Planeta destino: {mision_seleccionada.planeta_destino}")
+        print(f"Nave utilizada: {mision_seleccionada.nave_utilizar}")
 
         print("Armas utilizadas:")
-        for arma in mision_seleccionada['armas_utilizar']:
+        for arma in mision_seleccionada.armas_utilizar:
             print(f"- {arma}")
 
         print("Integrantes de la misión:")
-        for integrante in mision_seleccionada['integrantes_mision']:
+        for integrante in mision_seleccionada.integrantes_mision:
             print(f"- {integrante}")
     
     def transformar_weapons(self): #TENGO QUE REVISAR ESTO

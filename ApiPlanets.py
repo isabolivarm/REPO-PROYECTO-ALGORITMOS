@@ -30,7 +30,8 @@ def cargar_planetas():
                             
             # crear un objeto de la clase Planeta
             obj = Planeta(id, detalle_planeta['name'], detalle_planeta['orbital_period'], detalle_planeta['rotation_period'], detalle_planeta['population'], detalle_planeta['climate'])
-            lista_planetas.append(obj)                           
+            lista_planetas.append(obj)
+            obj.imprimir_planeta()                           
                             
     return lista_planetas
         

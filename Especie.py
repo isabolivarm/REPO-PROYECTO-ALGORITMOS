@@ -12,6 +12,11 @@ class Especie:
         #self.episodios = episodios
     
     def imprimir_especie(self):
+        txt_personajes = ""
+        
+        for personaje in self.personajes:
+            txt_personajes += f" {personaje},"
+        
         print(f"""
         ID: {self.id}
         Nombre: {self.nombre}
@@ -19,7 +24,8 @@ class Especie:
         Clasificacion: {self.clasificacion}
         Planeta: {self.planeta}
         Lengua: {self.lengua}
-        Personajes: {self.personajes}""")
+        Personajes:{txt_personajes}""")
+    
     
 
     

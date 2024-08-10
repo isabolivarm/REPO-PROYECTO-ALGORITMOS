@@ -40,7 +40,8 @@ def cargar_especies():
                             
             # crear un objeto de la clase Especie
             obj = Especie(id, detalle_especie['name'], detalle_especie['average_height'], detalle_especie['classification'], planeta, detalle_especie['language'], personajes)                        
-            lista_especies.append(obj)                                           
+            lista_especies.append(obj) 
+            obj.imprimir_especie()                                          
                             
     return lista_especies
 

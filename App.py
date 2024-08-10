@@ -167,6 +167,7 @@ class App:
             while True:
                 for info_vehiculo in datos_vehiculo["results"]:
                     vehiculos.append(info_vehiculo["name"])
+                    print(info_vehiculo) 
                 if not datos_vehiculo["next"]:
                     break
                 url_vehiculo = datos_vehiculo["next"]
@@ -174,7 +175,8 @@ class App:
             for url_vehiculo in urls_vehiculos:
                 respuesta_vehiculo = requests.get(url_vehiculo)
                 datos_vehiculo = respuesta_vehiculo.json()
-                vehiculos.append(datos_vehiculo["name"])
+                if "name" in datos_vehiculo:
+                    vehiculos.append(datos_vehiculo["name"])
 
         return {
             "nombre": nombre,

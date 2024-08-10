@@ -1,89 +1,123 @@
-from Mision import Mision
+from ApiVehicles import cargar_api
+from ApiStarships import cargar_api
+#from ApiSpecies import cargar_especies
+#from ApiPlanets import cargar_planetas
+from ApiPeople import cargar_api
+from ApiFilms import cargar_api
+from Film import Film
+from Weapon import Weapon
+from Starship import Starship
 import csv
+#import matplotlib.pyplot as plt
+#import tabulate
+import statistics
+from Mision import Mision
+import requests
+from Personaje import Personaje
 
+class Prueba:
+  
+    def start(self):
+        self.buscando_personaje()
 
-def crear_mision(self):
-    num_misiones = 0
-    print("Creemos una nueva misión")
-    
-    while num_misiones < 5:
-        nombre_mision = input("Ingrese el nombre de la mision: ")
+    def buscar_personaje(self,nombre):
+        url = "https://swapi.dev/api/people/"
+        response = requests.get(url, params={"search": nombre})
+        return response.json()["results"]
 
-        planets = []
-        with open('planets.csv', 'r') as csv_file:
-            reader = csv.reader(csv_file)
-            next(reader)  
-            for row in reader:
-                planets.append(row[1]) 
+    def obtener_info_personaje(self,personaje):
+        nombre = personaje["name"]
+        url_planeta = personaje["homeworld"]
+        planeta=cargar_api(url_planeta)
+        nombre_planeta = planeta["name"]
 
-        print("Planetas disponibles:")
-        for i, planet in enumerate(planets):
-            print(f"{i+1}. {planet}")
+        urls_peliculas = personaje["films"]
+        episodios = []
+        for url_pelicula in urls_peliculas:
+            datos_pelicula = cargar_api(url_pelicula)
+            episodios.append(datos_pelicula["episode_id"])
 
-        planeta_destino = int(input("Ingrese el número del planeta que desea seleccionar: "))
+        species_urls = personaje["species"]
+        especie = ""
+        if not species_urls:
+            species_url = "https://swapi.dev/api/species/"
+            while True:
+                species_response = requests.get(species_url)
+                species_data = species_response.json()
+                for species_info in species_data["results"]:
+                    if species_info["name"] != "Unknown":
+                        especie = species_info["name"]
+                        break
+                if especie or not species_data["next"]:
+                    break
+                species_url = species_data["next"]
+        else:
+            species_response = requests.get(species_urls[0])
+            species_data = species_response.json()
+            especie = species_data["name"]
 
-        starships = []
-        with open('starships.csv', 'r') as csv_file:
-            reader = csv.reader(csv_file)
-            next(reader)  
-            for row in reader:
-                starships.append(row[1]) 
+        
+        urls_naves = personaje["starships"]
+        naves = []
+        if not urls_naves:
+            buscar_naves=cargar_api("https://swapi.dev/api/starships/")
+            for nave in buscar_naves["results"]:
+                for piloto in nave["pilots"]:
+                    if piloto==personaje["url"]:
+                       naves.append(nave["name"])
+        else:
+            for url_nave in urls_naves:
+                datos_nave = cargar_api(url_nave)
+                naves.append(datos_nave["name"])
 
-        print("Naves disponibles:")
-        for i, starship in enumerate(starships):
-            print(f"{i+1}. {starship}")
+        urls_vehiculos = personaje["vehicles"]
+        vehiculos = []
+        if not urls_vehiculos:
+            datos_vehiculo = cargar_api("https://swapi.dev/api/vehicles/")
+            while True:
+                for info_vehiculo in datos_vehiculo["results"]:
+                    vehiculos.append(info_vehiculo["name"])
+                    print(info_vehiculo) 
+                if not datos_vehiculo["next"]:
+                    break
+                url_vehiculo = datos_vehiculo["next"]
+        else:
+            for url_vehiculo in urls_vehiculos:
+                respuesta_vehiculo = requests.get(url_vehiculo)
+                datos_vehiculo = respuesta_vehiculo.json()
+                if "name" in datos_vehiculo:
+                    vehiculos.append(datos_vehiculo["name"])
 
-        nave_utilizar = int(input("Ingrese el número de la nave que desea seleccionar: "))
+        return {
+            "nombre": nombre,
+            "planeta_origen": nombre_planeta,
+            "peliculas": episodios,
+            "especie": especie,
+            "naves": naves,
+            "vehiculos": vehiculos,
+            "genero": personaje["gender"]
+        }
 
-
-        weapons = []
-        with open('weapons.csv', 'r') as csv_file:
-            reader = csv.reader(csv_file)
-            next(reader) 
-            for row in reader:
-                weapons.append(row[1])  
-
-        print("Armas disponibles:")
-        for i, weapon in enumerate(weapons):
-            print(f"{i+1}. {weapon}")
-
-        armas_utilizar = []
-        while len(armas_utilizar) < 7:
-            arma_seleccionada = int(input("Ingrese el número de la arma que desea seleccionar (o 0 para finalizar): "))
-            if arma_seleccionada == 0:
-                break
-            armas_utilizar.append(weapons[arma_seleccionada-1])
-            print(f"Ha seleccionado: {armas_utilizar[-1]}")
-
-            
-        characters = []
-        with open('characters.csv', 'r') as csv_file:
-            reader = csv.reader(csv_file)
-            next(reader) 
-            for row in reader:
-                characters.append(row[1])  
-        print("Personajes disponibles:")
-        for i, character in enumerate(characters):
-            print(f"{i+1}. {character}")
-
-        integrantes_mision = []
-        while len(integrantes_mision) < 7:
-            integrante_seleccionado = int(input("Ingrese el número del personaje que desea seleccionar (o 0 para finalizar): "))
-            if integrante_seleccionado == 0:
-                break
-            integrantes_mision.append(characters[integrante_seleccionado-1])
-            print(f"Ha seleccionado: {integrantes_mision[-1]}")
-          
-
-             
-        mision = Mision(nombre_mision, planeta_destino, nave_utilizar, armas_utilizar, integrantes_mision)
-        self.misiones_obj.append(mision)
-        print('mision creada con exito')
-        num_misiones += 1
-
-        if num_misiones < 5:
-            respuesta = input("¿Desea crear otra misión? (si/no): ")
-            if respuesta.lower() == 'no':
-                break
-    else:
-        print("Se han creado 5 misiones. No se pueden crear más.")
+    def buscando_personaje(self):
+        nombre = input("Ingrese el nombre de un personaje: ")
+        personajes = self.buscar_personaje(nombre)
+        for personaje in personajes:
+            info = self.obtener_info_personaje(personaje)
+            personaje_obj = Personaje(
+                nombre=info["nombre"],
+                planeta_origen=info["planeta_origen"],
+                episodios=info["peliculas"],
+                genero=info["genero"],
+                especie=info["especie"],
+                naves=info["naves"],
+                vehiculos=info["vehiculos"]
+            )
+            self.personajes_obj.append(personaje_obj)
+            print("Nombre:", personaje_obj.nombre)
+            print("Planeta de origen:", personaje_obj.planeta_origen)
+            print("Episodios en los que interviene:", ", ".join([str(episodio) for episodio in personaje_obj.episodios]))
+            print("Especie:", personaje_obj.especie)
+            print("Naves:", ", ".join(personaje_obj.naves))
+            print("Vehiculos:", ", ".join(personaje_obj.vehiculos))
+            print("Genero:", personaje_obj.genero)
+            print()

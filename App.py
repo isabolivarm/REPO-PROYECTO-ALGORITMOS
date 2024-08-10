@@ -68,7 +68,8 @@ class App:
                 self.graficos_personajes_planetas(dict_characters)
             
             elif opcion_menu=="6":
-               print("Falta de oriana")
+               #grafico de comparacion de naves
+               self.grafico_comp_naves()
 
             elif opcion_menu=="7":
                 self.estadisticas_naves()
@@ -490,11 +491,72 @@ class App:
         plt.title("Cantidad de personajes por planeta")
         plt.xticks(rotation=90)  
         plt.show()
-
     
-        
+    def grafico_comp_naves(self):
 
-    
+        # Leer el CSV
+        with open('starships.csv', mode='r') as file:
+            reader = csv.DictReader(file)
+            
+            lengths = []
+            cargo_capacities = []
+            hyperdrive_ratings = []
+            mglt_values = []
+            names = []
 
+            for row in reader:
+                # Extraer y convertir los datos
+                try:
+                    length = float(row['length']) if row['length'] else 0
+                    cargo_capacity = float(row['cargo_capacity']) if row['cargo_capacity'] else 0
+                    hyperdrive_rating = float(row['hyperdrive_rating']) if row['hyperdrive_rating'] else 0
+                    mglt = float(row['MGLT']) if row['MGLT'] else 0
+                    
+                    lengths.append(length)
+                    cargo_capacities.append(cargo_capacity)
+                    hyperdrive_ratings.append(hyperdrive_rating)
+                    mglt_values.append(mglt)
+                    names.append(row['name'])
+                except ValueError:                    
+                    print(f"Error al convertir los datos para la nave")       
 
+        # Gráfico de Longitud de la Nave
+        plt.figure(figsize=(12, 8))
+        plt.barh(names, lengths, color='skyblue')
+        plt.title('Longitud de la Nave')
+        plt.xlabel('Longitud (metros)')
+        plt.ylabel('Nombre de la Nave') 
+        plt.yticks(fontsize=7)          
+        plt.tight_layout()
+        plt.show()
+
+        # Gráfico de Capacidad de Carga
+        plt.figure(figsize=(12, 8))
+        plt.barh(names, cargo_capacities, color='salmon')
+        plt.title('Capacidad de Carga')
+        plt.xlabel('Capacidad de Carga (kg)')
+        plt.ylabel('Nombre de la Nave')   
+        plt.yticks(fontsize=7)           
+        plt.tight_layout()
+        plt.show()
+
+        # Gráfico de Clasificación del Hiperimpulsor
+        plt.figure(figsize=(12, 8))
+        plt.barh(names, hyperdrive_ratings, color='lightgreen')
+        plt.title('Clasificación del Hiperimpulsor')
+        plt.xlabel('Clasificación del Hiperimpulsor')
+        plt.ylabel('Nombre de la Nave')  
+        plt.yticks(fontsize=7)       
+        plt.tight_layout()
+        plt.show()
+
+        # Gráfico de MGLT
+        plt.figure(figsize=(12, 8))
+        plt.barh(names, mglt_values, color='gold')
+        plt.title('MGLT')
+        plt.xlabel('MGLT')
+        plt.ylabel('Nombre de la Nave')   
+        plt.yticks(fontsize=7)     
+        plt.tight_layout()
+        plt.show()
 

@@ -6,7 +6,7 @@ from ApiPeople import cargar_api
 from ApiFilms import cargar_api
 from Film import Film
 from Weapon import Weapon
-from Starship import Starship
+#from Starship import Starship
 import csv
 
 class App:

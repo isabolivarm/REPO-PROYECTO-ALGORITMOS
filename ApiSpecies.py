@@ -2,8 +2,11 @@ import requests as rq
 from Especie import Especie
 
 def cargar_api(link):
-    informacion=rq.get(link).json()
-    return informacion
+    try:
+        informacion=rq.get(link).json()
+        return informacion
+    except:
+        print("Error al cargar la API")        
 
 def cargar_especies():
     link = 'https://www.swapi.tech/api/species' 

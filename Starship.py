@@ -76,4 +76,6 @@ class Starship:
         headers = ["Estadística", "Promedio", "Moda", "Máximo", "Mínimo"]
         print(tabulate.tabulate(filas, headers=headers, tablefmt="grid"))
 
+    
+
     abrir_naves()

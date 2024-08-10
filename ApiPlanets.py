@@ -2,8 +2,11 @@ import requests as rq
 from Planeta import Planeta
 
 def cargar_api(link):
-    informacion=rq.get(link).json()   
-    return informacion
+    try:
+        informacion=rq.get(link).json()   
+        return informacion
+    except:
+        print("Error al cargar la API")
 
 def cargar_planetas():
     link = 'https://www.swapi.tech/api/planets' 

@@ -371,9 +371,14 @@ class App:
                     self.misiones_obj.append(mision)
                 print('mision creada con exito')
                 num_misiones += 1
+
+                
+                if num_misiones >= 5:
+                    print("Se han creado 5 misiones. No se pueden crear más.")
+                    break
         
-                respuesta = input("¿Desea crear otra misión? (s/n): ")
-                if respuesta.lower() != 's':
+                respuesta = input("¿Desea crear otra misión? (si/no): ")
+                if respuesta.lower() == 'n':
                     break
 
     def guardar_misiones(self):

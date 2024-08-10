@@ -84,7 +84,7 @@ class App:
                 self.guardar_misiones()
             
             elif opcion_menu=="12":
-                print("falta de gaby")
+                self.cargar_misiones()
 
             elif opcion_menu=="13":
                 break
@@ -127,30 +127,38 @@ class App:
             datos_pelicula = cargar_api(url_pelicula)
             episodios.append(datos_pelicula["episode_id"])
 
-        urls_especies = personaje["species"]
+        species_urls = personaje["species"]
         especie = ""
-        
-        if not urls_especies:
-            url_especie = cargar_api("https://swapi.dev/api/species/")
-            datos_especie = url_especie  
+        if not species_urls:
+            species_url = "https://swapi.dev/api/species/"
             while True:
-                for info_especie in datos_especie["results"]:
-                    if info_especie["name"] == "Unknown":
-                        especie = info_especie["name"]
+                species_response = requests.get(species_url)
+                species_data = species_response.json()
+                for species_info in species_data["results"]:
+                    if species_info["name"] != "Unknown":
+                        especie = species_info["name"]
                         break
-                if especie or not datos_especie["next"]:
+                if especie or not species_data["next"]:
                     break
-                datos_especie = cargar_api(datos_especie["next"])
+                species_url = species_data["next"]
         else:
-            respuesta_especie = requests.get(urls_especies[0])
-            datos_especie = respuesta_especie.json()
-            especie = datos_especie["name"]
+            species_response = requests.get(species_urls[0])
+            species_data = species_response.json()
+            especie = species_data["name"]
 
+        
         urls_naves = personaje["starships"]
         naves = []
-        for url_nave in urls_naves:
-            datos_nave = cargar_api(url_nave)
-            naves.append(datos_nave["name"])
+        if not urls_naves:
+            buscar_naves=cargar_api("https://swapi.dev/api/starships/")
+            for nave in buscar_naves["results"]:
+                for piloto in nave["pilots"]:
+                    if piloto==personaje["url"]:
+                       naves.append(nave["name"])
+        else:
+            for url_nave in urls_naves:
+                datos_nave = cargar_api(url_nave)
+                naves.append(datos_nave["name"])
 
         urls_vehiculos = personaje["vehicles"]
         vehiculos = []
@@ -384,6 +392,45 @@ class App:
                 archivo.write(f"  Nave utilizada: {mision.nave_utilizar}\n")
                 archivo.write(f"  Armas utilizadas: {', '.join(mision.armas_utilizar)}\n")
                 archivo.write(f"  Integrantes: {', '.join(mision.integrantes_mision)}\n\n")
+
+    def cargar_misiones(self):
+        misiones = []
+        try:
+            with open('misiones.txt', 'r') as archivo:
+                lines = archivo.readlines()
+                mision = {}
+                for line in lines:
+                    line = line.strip()
+                    if line.startswith("Misión "):
+                        if mision:
+                            misiones.append(Mision(
+                                nombre_mision=mision['nombre_mision'],
+                                planeta_destino=mision['planeta_destino'],
+                                nave_utilizar=mision['nave_utilizar'],
+                                armas_utilizar=mision['armas_utilizar'],
+                                integrantes_mision=mision['integrantes_mision']
+                            ))
+                            mision = {}
+                        mision['nombre_mision'] = line[7:]
+                    elif line.startswith("  Planeta destino: "):
+                        mision['planeta_destino'] = line[19:]
+                    elif line.startswith("  Nave utilizada: "):
+                        mision['nave_utilizar'] = line[18:]
+                    elif line.startswith("  Armas utilizadas: "):
+                        mision['armas_utilizar'] = [arma.strip() for arma in line[19:].split(',')]
+                    elif line.startswith("  Integrantes: "):
+                        mision['integrantes_mision'] = [integrante.strip() for integrante in line[13:].split(',')]
+                if mision:
+                    misiones.append(Mision(
+                        nombre_mision=mision['nombre_mision'],
+                        planeta_destino=mision['planeta_destino'],
+                        nave_utilizar=mision['nave_utilizar'],
+                        armas_utilizar=mision['armas_utilizar'],
+                        integrantes_mision=mision['integrantes_mision']
+                    ))
+            self.misiones_obj = misiones
+        except FileNotFoundError:
+            print("No se encontró el archivo de misiones.")
 
     def ver_mision(self):
         if not self.misiones_obj:

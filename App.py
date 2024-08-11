@@ -173,7 +173,6 @@ class App:
         urls_vehiculos = personaje["vehicles"]
         vehiculos = []
         if not urls_vehiculos:
-            print("El personaje no tiene vehículos asociados. Buscando en la lista de vehículos...")
             datos_vehiculo = cargar_api("https://swapi.dev/api/vehicles/")
             encontrado = False
             while True:
@@ -193,11 +192,10 @@ class App:
                 vehiculos = ["No tiene vehículos"]
         else:
             for url_vehiculo in urls_vehiculos:
-                respuesta_vehiculo = requests.get(url_vehiculo)
-                datos_vehiculo = respuesta_vehiculo.json()
+                datos_vehiculo = cargar_api(url_vehiculo)
                 if "name" in datos_vehiculo:
                     vehiculos.append(datos_vehiculo["name"])
-        
+                
         return {
             "nombre": nombre,
             "planeta_origen": nombre_planeta,
@@ -211,26 +209,30 @@ class App:
     def buscando_personaje(self):
         nombre = input("Ingrese el nombre de un personaje: ")
         personajes = self.buscar_personaje(nombre)
-        for personaje in personajes:
-            info = self.obtener_info_personaje(personaje)
-            personaje_obj = Personaje(
-                nombre=info["nombre"],
-                planeta_origen=info["planeta_origen"],
-                episodios=info["peliculas"],
-                genero=info["genero"],
-                especie=info["especie"],
-                naves=info["naves"],
-                vehiculos=info["vehiculos"]
-            )
-            self.personajes_obj.append(personaje_obj)
-            print("Nombre:", personaje_obj.nombre)
-            print("Planeta de origen:", personaje_obj.planeta_origen)
-            print("Episodios en los que interviene:", ", ".join([str(episodio) for episodio in personaje_obj.episodios]))
-            print("Especie:", personaje_obj.especie)
-            print("Naves:", ", ".join(personaje_obj.naves))
-            print("Vehiculos:", ", ".join(personaje_obj.vehiculos))
-            print("Genero:", personaje_obj.genero)
-            print()
+        if not personajes:
+            print("Lo sentimos, no se encontró un personaje con ese nombre en el universo de Star Wars.")
+            print("Por favor, inténtelo de nuevo con un personaje válido.")
+        else:
+            for personaje in personajes:
+                info = self.obtener_info_personaje(personaje)
+                personaje_obj = Personaje(
+                    nombre=info["nombre"],
+                    planeta_origen=info["planeta_origen"],
+                    episodios=info["peliculas"],
+                    genero=info["genero"],
+                    especie=info["especie"],
+                    naves=info["naves"],
+                    vehiculos=info["vehiculos"]
+                )
+                self.personajes_obj.append(personaje_obj)
+                print("Nombre:", personaje_obj.nombre)
+                print("Planeta de origen:", personaje_obj.planeta_origen)
+                print("Episodios en los que interviene:", ", ".join([str(episodio) for episodio in personaje_obj.episodios]))
+                print("Especie:", personaje_obj.especie)
+                print("Naves:", ", ".join(personaje_obj.naves))
+                print("Vehiculos:", ", ".join(personaje_obj.vehiculos))
+                print("Genero:", personaje_obj.genero)
+                print()
 
 
 
@@ -337,8 +339,8 @@ class App:
                 for i, planet in enumerate(planets):
                     print(f"{i+1}. {planet}")
 
-                planeta_destino = int(input("Ingrese el número del planeta que desea seleccionar: "))
-
+                planeta_destino_seleccion = int(input("Ingrese el número del planeta que desea seleccionar: "))
+                planeta_destino=planets[planeta_destino_seleccion-1]
             starships = []
             with open('starships.csv', 'r') as csv_file:
                 reader = csv.reader(csv_file)
@@ -350,8 +352,8 @@ class App:
                 for i, starship in enumerate(starships):
                     print(f"{i+1}. {starship}")
 
-                nave_utilizar = int(input("Ingrese el número de la nave que desea seleccionar: "))
-
+                nave_utilizar_seleccion = int(input("Ingrese el número de la nave que desea seleccionar: "))
+                nave_utilizar=starships[nave_utilizar_seleccion-1]
 
             weapons = []
             with open('weapons.csv', 'r') as csv_file:
@@ -406,8 +408,10 @@ class App:
                 break
         
             respuesta = input("¿Desea crear otra misión? (si/no): ")
+            while respuesta.lower().strip() not in ['si', 'no']:
+                respuesta = input("Por favor, ingrese 'si' o 'no': ")
             if respuesta.lower() == 'no':
-                break
+                 break
 
     def guardar_misiones(self):
         with open('misiones.txt', 'w') as archivo:

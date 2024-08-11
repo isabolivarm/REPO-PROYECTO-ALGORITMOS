@@ -88,6 +88,10 @@ class App:
 
             elif opcion_menu=="13":
                 break
+            else:
+                print("Opción inválida.")
+                continue
+
         
 
     def crear_films(self):

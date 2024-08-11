@@ -2,8 +2,11 @@ import requests as rq
 from Especie import Especie
 
 def cargar_api(link):
-    informacion=rq.get(link).json()
-    return informacion
+    try:
+        informacion=rq.get(link).json()
+        return informacion
+    except:
+        print("Error al cargar la API")        
 
 def cargar_especies():
     link = 'https://www.swapi.tech/api/species' 
@@ -37,8 +40,8 @@ def cargar_especies():
                             
             # crear un objeto de la clase Especie
             obj = Especie(id, detalle_especie['name'], detalle_especie['average_height'], detalle_especie['classification'], planeta, detalle_especie['language'], personajes)                        
-            lista_especies.append(obj)                                           
+            lista_especies.append(obj) 
+            obj.imprimir_especie()                                          
                             
     return lista_especies
 
-cargar_especies()

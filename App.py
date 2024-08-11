@@ -1,7 +1,7 @@
 from ApiVehicles import cargar_api
 from ApiStarships import cargar_api
-#from ApiSpecies import cargar_especies
-#from ApiPlanets import cargar_planetas
+from ApiSpecies import cargar_especies
+from ApiPlanets import cargar_planetas
 from ApiPeople import cargar_api
 from ApiFilms import cargar_api
 from Film import Film
@@ -53,10 +53,12 @@ class App:
                  self.print_films()
                 
             elif opcion_menu=="2":
-                print("Falta de Oriana")
+                # mostrar las especies
+                self.species_obj = cargar_especies()
                 
             elif opcion_menu=="3":
-                print("Falta de Oriana")
+                # mostrar los planetas
+                self.planets_obj = cargar_planetas()
             
             elif opcion_menu=="4":
                 self.buscando_personaje()
@@ -66,7 +68,8 @@ class App:
                 self.graficos_personajes_planetas(dict_characters)
             
             elif opcion_menu=="6":
-               print("Falta de oriana")
+               #grafico para comparacion de naves
+               self.grafico_comp_naves()
 
             elif opcion_menu=="7":
                 self.estadisticas_naves()
@@ -75,7 +78,8 @@ class App:
                 self.crear_mision()
             
             elif opcion_menu=="9":
-                print("falta de oriana")
+                # modificar una mision
+                self.modificar_mision()
             
             elif opcion_menu=="10":
                 self.ver_mision()
@@ -514,11 +518,226 @@ class App:
         plt.title("Cantidad de personajes por planeta")
         plt.xticks(rotation=90)  
         plt.show()
-
     
+    def grafico_comp_naves(self):
+
+        # Leer el CSV
+        with open('starships.csv', mode='r') as file:
+            reader = csv.DictReader(file)
+            
+            lengths = []
+            cargo_capacities = []
+            hyperdrive_ratings = []
+            mglt_values = []
+            names = []
+
+            for row in reader:
+                # Extraer y convertir los datos
+                try:
+                    length = float(row['length']) if row['length'] else 0
+                    cargo_capacity = float(row['cargo_capacity']) if row['cargo_capacity'] else 0
+                    hyperdrive_rating = float(row['hyperdrive_rating']) if row['hyperdrive_rating'] else 0
+                    mglt = float(row['MGLT']) if row['MGLT'] else 0
+                    
+                    lengths.append(length)
+                    cargo_capacities.append(cargo_capacity)
+                    hyperdrive_ratings.append(hyperdrive_rating)
+                    mglt_values.append(mglt)
+                    names.append(row['name'])
+                except ValueError:                    
+                    print(f"Error al convertir los datos para la nave")       
+
+        # Gráfico de Longitud de la Nave
+        plt.figure(figsize=(12, 8))
+        plt.barh(names, lengths, color='skyblue')
+        plt.title('Longitud de la Nave')
+        plt.xlabel('Longitud (metros)')
+        plt.ylabel('Nombre de la Nave') 
+        plt.yticks(fontsize=7)          
+        plt.tight_layout()
+        plt.show()
+
+        # Gráfico de Capacidad de Carga
+        plt.figure(figsize=(12, 8))
+        plt.barh(names, cargo_capacities, color='salmon')
+        plt.title('Capacidad de Carga')
+        plt.xlabel('Capacidad de Carga (kg)')
+        plt.ylabel('Nombre de la Nave')   
+        plt.yticks(fontsize=7)           
+        plt.tight_layout()
+        plt.show()
+
+        # Gráfico de Clasificación del Hiperimpulsor
+        plt.figure(figsize=(12, 8))
+        plt.barh(names, hyperdrive_ratings, color='lightgreen')
+        plt.title('Clasificación del Hiperimpulsor')
+        plt.xlabel('Clasificación del Hiperimpulsor')
+        plt.ylabel('Nombre de la Nave')  
+        plt.yticks(fontsize=7)       
+        plt.tight_layout()
+        plt.show()
+
+        # Gráfico de MGLT
+        plt.figure(figsize=(12, 8))
+        plt.barh(names, mglt_values, color='gold')
+        plt.title('MGLT')
+        plt.xlabel('MGLT')
+        plt.ylabel('Nombre de la Nave')   
+        plt.yticks(fontsize=7)     
+        plt.tight_layout()
+        plt.show()
+
+    def modificar_mision(self):
         
+        if len(self.misiones_obj) == 0:
+            print("No hay misiones para modificar")
+            return
 
-    
+        print(" Misiones:")
+        for i, mision in enumerate(self.misiones_obj):
+            print(f"{i+1}.- {mision.nombre}")
+        
+        try:                    
+            seleccionar_mision = int(input("Seleccione una mision para modificar: "))
+            if seleccionar_mision not in range(1, len(self.misiones_obj)+1):
+                raise Exception
+        except:
+            print("Opción no válida")
+            return
+        mision_seleccionada = self.misiones_obj[seleccionar_mision-1]
 
+        print(f"""
+        1. Eliminar armas
+        2. Agregar armas
+        3. Eliminar integrantes
+        4. Agregar integrantes""")
 
+        try:
+            opcion = int(input("Seleccione una opción: "))
+            if opcion not in range(1, 5):
+                raise Exception
+        except:
+            print("Opción no válida")
+            return
+        
+        if opcion == 1:    
+            # eliminar armas   
+            while len(mision_seleccionada.armas_utilizar) > 0:              
+                print("Armas de la misión:")
+                for i, arma in enumerate(mision_seleccionada.armas_utilizar):
+                    print(f"{i+1}.- {arma}")
+                
+                try:
+                    seleccionar_arma = int(input("Seleccione un arma para eliminar (o 0 para cancelar): "))
+                    
+                    if seleccionar_arma == 0:
+                        break
+                    if seleccionar_arma not in range(1, len(mision_seleccionada.armas_utilizar)+1):
+                        raise Exception
+                    
+                    mision_seleccionada.armas_utilizar.pop(seleccionar_arma-1)
+                    print("Arma eliminada con éxito")
 
+                except:
+                    print("Opción no válida")
+                    return                
+
+        elif opcion == 2:
+            # agregar armas   
+            
+            if len(mision_seleccionada.armas_utilizar) >= 7:
+                print("No puedes agregar más armas")
+                return   
+                  
+            armas = []
+            with open('weapons.csv', 'r') as csv_file:
+                reader = csv.reader(csv_file)
+                next(reader) 
+                for row in reader:
+                    armas.append(row[1])
+            
+            print("Armas disponibles:")
+            for i, arma in enumerate(armas):
+                print(f"{i+1}. {arma}")                    
+
+            while len(mision_seleccionada.armas_utilizar) < 7:
+                try:
+                    seleccionar_arma = int(input("Seleccione un arma para agregar (o 0 para cancelar): "))
+                    
+                    if seleccionar_arma == 0:
+                        break
+                    if seleccionar_arma not in range(1, len(armas)+1):
+                        raise Exception            
+                    
+                    arma = armas[seleccionar_arma-1]
+                    if arma in mision_seleccionada.armas_utilizar:
+                        print("El arma ya está en la misión")
+                        continue
+                    
+                    mision_seleccionada.armas_utilizar.append(arma)
+                    print(f"Arma: {arma} agregada con éxito")
+
+                except:
+                    print("Opción no válida")
+                    return                        
+
+        elif opcion == 3:
+            # eliminar integrantes
+            while len(mision_seleccionada.integrantes_mision) > 0:
+                print("\nIntegrantes de la misión:")
+                for i, integrante in enumerate(mision_seleccionada.integrantes_mision):
+                    print(f"{i+1}.- {integrante}")
+                
+                try:
+                    seleccionar_integrante = int(input("Seleccione un integrante para eliminar (o 0 para cancelar): "))
+                    
+                    if seleccionar_integrante == 0:
+                        break
+                    if seleccionar_integrante not in range(1, len(mision_seleccionada.integrantes_mision)+1):
+                        raise Exception
+                    
+                    mision_seleccionada.integrantes_mision.pop(seleccionar_integrante-1)
+                    print("Integrante eliminado con éxito")
+
+                except:
+                    print("Opción no válida")
+                    return           
+
+        elif opcion == 4:
+            # agregar integrantes
+
+            if len(mision_seleccionada.integrantes_mision) >= 7:
+                print("No puedes agregar más integrantes")
+                return
+
+            personajes = []
+            with open('characters.csv', 'r') as csv_file:
+                reader = csv.reader(csv_file)
+                next(reader) 
+                for row in reader:
+                    personajes.append(row[1])  
+
+            print("Personajes disponibles:")
+            for i, character in enumerate(personajes):
+                print(f"{i+1}. {character}")
+            
+            while len(mision_seleccionada.integrantes_mision) < 7:
+                try:
+                    seleccionar_personaje = int(input("Seleccione un personaje para agregar (o 0 para cancelar): "))
+                    
+                    if seleccionar_personaje == 0:
+                        break
+                    if seleccionar_personaje not in range(1, len(personajes)+1):
+                        raise Exception
+
+                    personaje = personajes[seleccionar_personaje-1]
+                    if personaje in mision_seleccionada.integrantes_mision:
+                        print("El personaje ya está en la misión")
+                        continue
+
+                    mision_seleccionada.integrantes_mision.append(personaje)
+                    print(f"Integrante: {personaje} agregado con éxito")
+
+                except:
+                    print("Opción no válida")
+                    return                    

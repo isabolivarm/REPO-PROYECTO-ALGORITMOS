@@ -68,7 +68,7 @@ class App:
                 self.graficos_personajes_planetas(dict_characters)
             
             elif opcion_menu=="6":
-               #grafico de comparacion de naves
+               #grafico para comparacion de naves
                self.grafico_comp_naves()
 
             elif opcion_menu=="7":
@@ -78,7 +78,8 @@ class App:
                 self.crear_mision()
             
             elif opcion_menu=="9":
-                print("falta de oriana")
+                # modificar una mision
+                self.modificar_mision()
             
             elif opcion_menu=="10":
                 self.ver_mision()
@@ -560,3 +561,126 @@ class App:
         plt.tight_layout()
         plt.show()
 
+    def modificar_mision(self):
+        
+        if len(self.misiones_obj) > 0:
+            print("No hay misiones para modificar")
+            return
+
+        print(" Misiones:")
+        for i, mision in enumerate(self.misiones_obj):
+            print(f"{i+1}.- {mision.nombre_mision}")
+        
+        try:                    
+            seleccionar_mision = int(input("Seleccione una mision para modificar: "))
+            if seleccionar_mision not in range(1, len(self.misiones_obj)+1):
+                raise Exception
+        except:
+            print("Opción no válida")
+            return
+        mision_seleccionada = self.misiones_obj[seleccionar_mision-1]
+
+        print(f"""
+        1. Eliminar armas
+        2. Agregar armas
+        3. Eliminar integrantes
+        4. Agregar integrantes""")
+
+        try:
+            opcion = int(input("Seleccione una opción: "))
+            if opcion not in range(1, 5):
+                raise Exception
+        except:
+            print("Opción no válida")
+            return
+        
+        if opcion == 1:    
+            # eliminar armas                 
+            print("Armas de la misión:")
+            for i, arma in enumerate(mision_seleccionada.armas_utilizar):
+                print(f"{i+1}.- {arma}")
+            
+            try:
+                seleccionar_arma = int(input("Seleccione un arma para eliminar: "))
+                if seleccionar_arma not in range(1, len(mision_seleccionada.armas_utilizar)+1):
+                    raise Exception
+            except:
+                print("Opción no válida")
+                return
+            mision_seleccionada.armas_utilizar.pop(seleccionar_arma-1)
+            print("Arma eliminada con éxito")
+
+        elif opcion == 2:
+            # agregar armas   
+            
+            if len(mision_seleccionada.armas_utilizar) >= 7:
+                print("No puedes agregar más armas")
+                return   
+                  
+            armas = []
+            with open('weapons.csv', 'r') as csv_file:
+                reader = csv.reader(csv_file)
+                next(reader) 
+                for row in reader:
+                    armas.append(row[1])
+            
+            print("Armas disponibles:")
+            for i, arma in enumerate(armas):
+                print(f"{i+1}. {arma}")                    
+
+            try:
+                seleccionar_arma = int(input("Seleccione un arma para agregar: "))
+                if seleccionar_arma not in range(1, len(armas)+1):
+                    raise Exception                
+            except:
+                print("Opción no válida")
+                return
+            
+            mision_seleccionada.armas_utilizar.append(armas[seleccionar_arma-1])
+            print("Arma agregada con éxito")
+
+        elif opcion == 3:
+            # eliminar integrantes
+            print("Integrantes de la misión:")
+            for i, integrante in enumerate(mision_seleccionada.integrantes_mision):
+                print(f"{i+1}.- {integrante}")
+            
+            try:
+                seleccionar_integrante = int(input("Seleccione un integrante para eliminar: "))
+                if seleccionar_integrante not in range(1, len(mision_seleccionada.integrantes_mision)+1):
+                    raise Exception
+            except:
+                print("Opción no válida")
+                return
+
+            mision_seleccionada.integrantes_mision.pop(seleccionar_integrante-1)
+            print("Integrante eliminado con éxito")
+
+        elif opcion == 4:
+            # agregar integrantes
+
+            if len(mision_seleccionada.integrantes_mision) >= 7:
+                print("No puedes agregar más integrantes")
+                return
+
+            personajes = []
+            with open('characters.csv', 'r') as csv_file:
+                reader = csv.reader(csv_file)
+                next(reader) 
+                for row in reader:
+                    personajes.append(row[1])  
+
+            print("Personajes disponibles:")
+            for i, character in enumerate(personajes):
+                print(f"{i+1}. {character}")
+            
+            try:
+                seleccionar_personaje = int(input("Seleccione un personaje para agregar: "))
+                if seleccionar_personaje not in range(1, len(personajes)+1):
+                    raise Exception
+            except:
+                print("Opción no válida")
+                return
+            
+            mision_seleccionada.integrantes_mision.append(personajes[seleccionar_personaje-1])
+            print("Integrante agregado con éxito")

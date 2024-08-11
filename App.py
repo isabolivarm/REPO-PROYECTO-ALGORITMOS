@@ -63,11 +63,13 @@ class App:
                     
                 elif opcion_menu== 2:
                     # mostrar las especies
+                    print("Cargando especies... Por favor espere.")
                     self.species_obj = cargar_especies()
                     
                 elif opcion_menu== 3:
                     # mostrar los planetas
-                    self.planets_obj = cargar_planetas()
+                    print("Cargando planetas... Por favor espere.")
+                    self.planets_obj = cargar_planetas(self.personajes_obj)
                 
                 elif opcion_menu== 4:
                     self.buscando_personaje()
@@ -131,7 +133,7 @@ class App:
         
     def buscar_personaje(self,nombre):
         url = "https://swapi.dev/api/people/"
-        response = requests.get(url, params={"search": nombre})
+        response = requests.get(url, params={"search": nombre})        
         return response.json()["results"]
 
     def obtener_info_personaje(self,personaje):

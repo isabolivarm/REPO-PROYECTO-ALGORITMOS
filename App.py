@@ -31,70 +31,81 @@ class App:
         self.cargar_starships()
         
         
-        print("Bienvenidos a esta aventura")
+        print(f"""
+    ███████╗████████╗ █████╗ ██████╗     ██╗    ██╗ █████╗ ██████╗ ███████╗
+    ██╔════╝╚══██╔══╝██╔══██╗██╔══██╗    ██║    ██║██╔══██╗██╔══██╗██╔════╝
+    ███████╗   ██║   ███████║██████╔╝    ██║ █╗ ██║███████║██████╔╝███████╗
+    ╚════██║   ██║   ██╔══██║██╔══██╗    ██║███╗██║██╔══██║██╔══██╗╚════██║
+    ███████║   ██║   ██║  ██║██║  ██║    ╚███╔███╔╝██║  ██║██║  ██║███████║
+    ╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝     ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝                                                                                    
+""")
         while True:
-            opcion_menu=input("""Ingrese el número de opción que desea explorar
-            1. Explorar las películas de la saga
-            2. Explorar las especies de seres vivos
-            3. Visualizar planetas
-            4. Buscar un personaje
-            5. Crear un gráfico de personajes según su planeta de nacimiento
-            6. Crear un gráfico para comparar las naves
-            7. Conocer las estadísticas de las naves
-            8. Crear una misión
-            9. Modificar una mision
-            10. Visualizar mision
-            11. Guardar misiones previamente creadas en archivo de texto
-            12. Cargar misiones previamente creadas en memoria                 
-            13. Salir
-            --> """)
+            try:
 
-            if opcion_menu =="1":
-                 self.print_films()
-                
-            elif opcion_menu=="2":
-                # mostrar las especies
-                self.species_obj = cargar_especies()
-                
-            elif opcion_menu=="3":
-                # mostrar los planetas
-                self.planets_obj = cargar_planetas()
-            
-            elif opcion_menu=="4":
-                self.buscando_personaje()
-                
-            elif opcion_menu=="5":
-                dict_characters=self.abrir_characters()
-                self.graficos_personajes_planetas(dict_characters)
-            
-            elif opcion_menu=="6":
-               #grafico para comparacion de naves
-               self.grafico_comp_naves()
+                opcion_menu = int(input("""Ingrese el número de opción que desea explorar
+                1. Explorar las películas de la saga
+                2. Explorar las especies de seres vivos
+                3. Visualizar planetas
+                4. Buscar un personaje
+                5. Crear un gráfico de personajes según su planeta de nacimiento
+                6. Crear un gráfico para comparar las naves
+                7. Conocer las estadísticas de las naves
+                8. Crear una misión
+                9. Modificar una mision
+                10. Visualizar mision
+                11. Guardar misiones previamente creadas en archivo de texto
+                12. Cargar misiones previamente creadas en memoria                 
+                13. Salir
+                --> """))
 
-            elif opcion_menu=="7":
-                self.estadisticas_naves()
+                if opcion_menu == 1:
+                    self.print_films()
+                    
+                elif opcion_menu== 2:
+                    # mostrar las especies
+                    self.species_obj = cargar_especies()
+                    
+                elif opcion_menu== 3:
+                    # mostrar los planetas
+                    self.planets_obj = cargar_planetas()
                 
-            elif opcion_menu=="8":
-                self.crear_mision()
-            
-            elif opcion_menu=="9":
+                elif opcion_menu== 4:
+                    self.buscando_personaje()
+                    
+                elif opcion_menu== 5:
+                    dict_characters=self.abrir_characters()
+                    self.graficos_personajes_planetas(dict_characters)
+                
+                elif opcion_menu== 6:
+                #grafico para comparacion de naves
+                    self.grafico_comp_naves()
+
+                elif opcion_menu== 7:
+                    self.estadisticas_naves()
+                    
+                elif opcion_menu== 8:
+                    self.crear_mision()
+                
+                elif opcion_menu== 9:
                 # modificar una mision
-                self.modificar_mision()
-            
-            elif opcion_menu=="10":
-                self.ver_mision()
-            
-            elif opcion_menu=="11":
-                self.guardar_misiones()
-            
-            elif opcion_menu=="12":
-                self.cargar_misiones()
+                    self.modificar_mision()
+                
+                elif opcion_menu== 10:
+                    self.ver_mision()
+                
+                elif opcion_menu== 11:
+                    self.guardar_misiones()
+                
+                elif opcion_menu== 12:
+                    self.cargar_misiones()
 
-            elif opcion_menu=="13":
-                break
-            else:
-                print("Opción inválida.")
-                continue
+                elif opcion_menu== 13:
+                    break
+                else:
+                    print("Opción inválida.")
+                    continue
+            except Exception as e:
+                print(f"Ocurrió un error: {e}")
 
         
 
@@ -404,8 +415,8 @@ class App:
 
          
                 
-                mision = Mision(nombre_mision, planeta_destino, nave_utilizar, armas_utilizar, integrantes_mision)
-                self.misiones_obj.append(mision)
+            mision = Mision(nombre_mision, planeta_destino, nave_utilizar, armas_utilizar, integrantes_mision)
+            self.misiones_obj.append(mision)
             print('mision creada con exito')
             num_misiones += 1
 

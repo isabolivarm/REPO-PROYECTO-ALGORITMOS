@@ -476,6 +476,7 @@ class App:
                         integrantes_mision=mision.get('integrantes_mision', [])
                     ))
             self.misiones_obj = misiones
+            print("Se guardo correctamente el archivo con las misiones.")
         except FileNotFoundError:
             print("No se encontró el archivo de misiones.")
 

@@ -547,46 +547,71 @@ class App:
                     names.append(row['name'])
                 except ValueError:                    
                     print(f"Error al convertir los datos para la nave")       
+        while True:
+            try:
+                opcion = int(input("""
+                Seleccione el grafico que desea visualizar:
+                1. Longitud de la nave
+                2. Capacidad de carga
+                3. Clasificación del Hiperimpulsor
+                4. MGLT
+                5. Volver al menú principal
+                --> """))
+                if opcion not in range(1, 6):
+                    raise Exception
+                
+                if opcion == 1:
+                    # Gráfico de Longitud de la Nave
+                    plt.figure(figsize=(12, 8))
+                    plt.barh(names, lengths, color='skyblue')
+                    plt.title('Longitud de la Nave')
+                    plt.xlabel('Longitud (metros)')
+                    plt.ylabel('Nombre de la Nave') 
+                    plt.yticks(fontsize=7)          
+                    plt.tight_layout()
+                    plt.show()
 
-        # Gráfico de Longitud de la Nave
-        plt.figure(figsize=(12, 8))
-        plt.barh(names, lengths, color='skyblue')
-        plt.title('Longitud de la Nave')
-        plt.xlabel('Longitud (metros)')
-        plt.ylabel('Nombre de la Nave') 
-        plt.yticks(fontsize=7)          
-        plt.tight_layout()
-        plt.show()
+                elif opcion == 2:
+                    # Gráfico de Capacidad de Carga
+                    plt.figure(figsize=(12, 8))
+                    plt.barh(names, cargo_capacities, color='salmon')
+                    plt.title('Capacidad de Carga')
+                    plt.xlabel('Capacidad de Carga (kg)')
+                    plt.ylabel('Nombre de la Nave')   
+                    plt.yticks(fontsize=7)           
+                    plt.tight_layout()
+                    plt.show()
 
-        # Gráfico de Capacidad de Carga
-        plt.figure(figsize=(12, 8))
-        plt.barh(names, cargo_capacities, color='salmon')
-        plt.title('Capacidad de Carga')
-        plt.xlabel('Capacidad de Carga (kg)')
-        plt.ylabel('Nombre de la Nave')   
-        plt.yticks(fontsize=7)           
-        plt.tight_layout()
-        plt.show()
+                elif opcion == 3:
+                    # Gráfico de Clasificación del Hiperimpulsor
+                    plt.figure(figsize=(12, 8))
+                    plt.barh(names, hyperdrive_ratings, color='lightgreen')
+                    plt.title('Clasificación del Hiperimpulsor')
+                    plt.xlabel('Clasificación del Hiperimpulsor')
+                    plt.ylabel('Nombre de la Nave')  
+                    plt.yticks(fontsize=7)       
+                    plt.tight_layout()
+                    plt.show()
 
-        # Gráfico de Clasificación del Hiperimpulsor
-        plt.figure(figsize=(12, 8))
-        plt.barh(names, hyperdrive_ratings, color='lightgreen')
-        plt.title('Clasificación del Hiperimpulsor')
-        plt.xlabel('Clasificación del Hiperimpulsor')
-        plt.ylabel('Nombre de la Nave')  
-        plt.yticks(fontsize=7)       
-        plt.tight_layout()
-        plt.show()
-
-        # Gráfico de MGLT
-        plt.figure(figsize=(12, 8))
-        plt.barh(names, mglt_values, color='gold')
-        plt.title('MGLT')
-        plt.xlabel('MGLT')
-        plt.ylabel('Nombre de la Nave')   
-        plt.yticks(fontsize=7)     
-        plt.tight_layout()
-        plt.show()
+                elif opcion == 4:
+                    # Gráfico de MGLT
+                    plt.figure(figsize=(12, 8))
+                    plt.barh(names, mglt_values, color='gold')
+                    plt.title('MGLT')
+                    plt.xlabel('MGLT')
+                    plt.ylabel('Nombre de la Nave')   
+                    plt.yticks(fontsize=7)     
+                    plt.tight_layout()
+                    plt.show()
+                
+                elif opcion == 5:
+                    break
+                
+                else:
+                    raise Exception
+            except:
+                print("Opción no válida")
+                
 
     def modificar_mision(self):
         

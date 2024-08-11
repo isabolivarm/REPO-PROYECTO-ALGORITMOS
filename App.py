@@ -563,13 +563,13 @@ class App:
 
     def modificar_mision(self):
         
-        if len(self.misiones_obj) > 0:
+        if len(self.misiones_obj) == 0:
             print("No hay misiones para modificar")
             return
 
         print(" Misiones:")
         for i, mision in enumerate(self.misiones_obj):
-            print(f"{i+1}.- {mision.nombre_mision}")
+            print(f"{i+1}.- {mision.nombre}")
         
         try:                    
             seleccionar_mision = int(input("Seleccione una mision para modificar: "))
@@ -595,20 +595,26 @@ class App:
             return
         
         if opcion == 1:    
-            # eliminar armas                 
-            print("Armas de la misión:")
-            for i, arma in enumerate(mision_seleccionada.armas_utilizar):
-                print(f"{i+1}.- {arma}")
-            
-            try:
-                seleccionar_arma = int(input("Seleccione un arma para eliminar: "))
-                if seleccionar_arma not in range(1, len(mision_seleccionada.armas_utilizar)+1):
-                    raise Exception
-            except:
-                print("Opción no válida")
-                return
-            mision_seleccionada.armas_utilizar.pop(seleccionar_arma-1)
-            print("Arma eliminada con éxito")
+            # eliminar armas   
+            while len(mision_seleccionada.armas_utilizar) > 0:              
+                print("Armas de la misión:")
+                for i, arma in enumerate(mision_seleccionada.armas_utilizar):
+                    print(f"{i+1}.- {arma}")
+                
+                try:
+                    seleccionar_arma = int(input("Seleccione un arma para eliminar (o 0 para cancelar): "))
+                    
+                    if seleccionar_arma == 0:
+                        break
+                    if seleccionar_arma not in range(1, len(mision_seleccionada.armas_utilizar)+1):
+                        raise Exception
+                    
+                    mision_seleccionada.armas_utilizar.pop(seleccionar_arma-1)
+                    print("Arma eliminada con éxito")
+
+                except:
+                    print("Opción no válida")
+                    return                
 
         elif opcion == 2:
             # agregar armas   
@@ -628,33 +634,48 @@ class App:
             for i, arma in enumerate(armas):
                 print(f"{i+1}. {arma}")                    
 
-            try:
-                seleccionar_arma = int(input("Seleccione un arma para agregar: "))
-                if seleccionar_arma not in range(1, len(armas)+1):
-                    raise Exception                
-            except:
-                print("Opción no válida")
-                return
-            
-            mision_seleccionada.armas_utilizar.append(armas[seleccionar_arma-1])
-            print("Arma agregada con éxito")
+            while len(mision_seleccionada.armas_utilizar) < 7:
+                try:
+                    seleccionar_arma = int(input("Seleccione un arma para agregar (o 0 para cancelar): "))
+                    
+                    if seleccionar_arma == 0:
+                        break
+                    if seleccionar_arma not in range(1, len(armas)+1):
+                        raise Exception            
+                    
+                    arma = armas[seleccionar_arma-1]
+                    if arma in mision_seleccionada.armas_utilizar:
+                        print("El arma ya está en la misión")
+                        continue
+                    
+                    mision_seleccionada.armas_utilizar.append(arma)
+                    print(f"Arma: {arma} agregada con éxito")
+
+                except:
+                    print("Opción no válida")
+                    return                        
 
         elif opcion == 3:
             # eliminar integrantes
-            print("Integrantes de la misión:")
-            for i, integrante in enumerate(mision_seleccionada.integrantes_mision):
-                print(f"{i+1}.- {integrante}")
-            
-            try:
-                seleccionar_integrante = int(input("Seleccione un integrante para eliminar: "))
-                if seleccionar_integrante not in range(1, len(mision_seleccionada.integrantes_mision)+1):
-                    raise Exception
-            except:
-                print("Opción no válida")
-                return
+            while len(mision_seleccionada.integrantes_mision) > 0:
+                print("\nIntegrantes de la misión:")
+                for i, integrante in enumerate(mision_seleccionada.integrantes_mision):
+                    print(f"{i+1}.- {integrante}")
+                
+                try:
+                    seleccionar_integrante = int(input("Seleccione un integrante para eliminar (o 0 para cancelar): "))
+                    
+                    if seleccionar_integrante == 0:
+                        break
+                    if seleccionar_integrante not in range(1, len(mision_seleccionada.integrantes_mision)+1):
+                        raise Exception
+                    
+                    mision_seleccionada.integrantes_mision.pop(seleccionar_integrante-1)
+                    print("Integrante eliminado con éxito")
 
-            mision_seleccionada.integrantes_mision.pop(seleccionar_integrante-1)
-            print("Integrante eliminado con éxito")
+                except:
+                    print("Opción no válida")
+                    return           
 
         elif opcion == 4:
             # agregar integrantes
@@ -674,13 +695,23 @@ class App:
             for i, character in enumerate(personajes):
                 print(f"{i+1}. {character}")
             
-            try:
-                seleccionar_personaje = int(input("Seleccione un personaje para agregar: "))
-                if seleccionar_personaje not in range(1, len(personajes)+1):
-                    raise Exception
-            except:
-                print("Opción no válida")
-                return
-            
-            mision_seleccionada.integrantes_mision.append(personajes[seleccionar_personaje-1])
-            print("Integrante agregado con éxito")
+            while len(mision_seleccionada.integrantes_mision) < 7:
+                try:
+                    seleccionar_personaje = int(input("Seleccione un personaje para agregar (o 0 para cancelar): "))
+                    
+                    if seleccionar_personaje == 0:
+                        break
+                    if seleccionar_personaje not in range(1, len(personajes)+1):
+                        raise Exception
+
+                    personaje = personajes[seleccionar_personaje-1]
+                    if personaje in mision_seleccionada.integrantes_mision:
+                        print("El personaje ya está en la misión")
+                        continue
+
+                    mision_seleccionada.integrantes_mision.append(personaje)
+                    print(f"Integrante: {personaje} agregado con éxito")
+
+                except:
+                    print("Opción no válida")
+                    return                    

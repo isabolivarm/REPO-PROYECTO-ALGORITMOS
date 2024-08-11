@@ -188,7 +188,6 @@ class App:
                 url_vehiculo = datos_vehiculo["next"]
                 datos_vehiculo = cargar_api(url_vehiculo)
             if not encontrado:
-                print(f"El personaje no posee ningún vehículo.")
                 vehiculos = ["No tiene vehículos"]
         else:
             for url_vehiculo in urls_vehiculos:

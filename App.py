@@ -256,7 +256,6 @@ class App:
 
 
 
-
     def cargar_starships(self):
         self.starships_obj = []
         with open("starships.csv", "r") as archivo_starships:
@@ -281,63 +280,51 @@ class App:
 
                 if row[4] == '':
                     costo_creditos = 0.0
+    
                 else:
                     costo_creditos = float(row[4])
-                self.starships_obj.append(Starship(nombre, hiperimpulsor, mglt, velocidad_max_atm, costo_creditos))
+                    clase=row[13]
+                self.starships_obj.append(Starship(clase, hiperimpulsor, mglt, velocidad_max_atm, costo_creditos))
+
+
 
 
     def estadisticas_naves(self):
-        hiper_impulsores = []
-        mglt = []
-        velocidad_maxima = []
-        costo_credito = []
-        for starship in self.starships_obj:
-            hiper_impulsores.append(starship.hiperimpulsor)
-            mglt.append(starship.mglt)
-            velocidad_maxima.append(starship.velocidad_max_atm)
-            costo_credito.append(starship.costo_creditos)
+        self.cargar_starships()
+        clases_starships = {}
+        for nave in self.starships_obj:
+            clase_nave = nave.clase
+            if clase_nave not in clases_starships:
+                clases_starships[clase_nave] = {
+                    "Hiperimpulsor": [],
+                    "MGLT": [],
+                    "Velocidad máxima en la atmósfera": [],
+                    "Costo en créditos": []
+                }
+            clases_starships[clase_nave]["Hiperimpulsor"].append(nave.hiperimpulsor)
+            clases_starships[clase_nave]["MGLT"].append(nave.mglt)
+            clases_starships[clase_nave]["Velocidad máxima en la atmósfera"].append(nave.velocidad_max_atm)
+            clases_starships[clase_nave]["Costo en créditos"].append(nave.costo_creditos)
 
-        estadisticas_starships = {
-            "Hiperimpulsor": {
-                "Promedio": statistics.mean(hiper_impulsores),
-                "Moda": statistics.mode(hiper_impulsores),
-                "Máximo": max(hiper_impulsores),
-                "Mínimo": min(hiper_impulsores)
-            },
-            "MGLT": {
-                "Promedio": statistics.mean(mglt),
-                "Moda": statistics.mode(mglt),
-                "Máximo": max(mglt),
-                "Mínimo": min(mglt)
-            },
-            "Velocidad máxima en la atmósfera": {
-                "Promedio": statistics.mean(velocidad_maxima),
-                "Moda": statistics.mode(velocidad_maxima),
-                "Máximo": max(velocidad_maxima),
-                "Mínimo": min(velocidad_maxima)
-            },
-            "Costo en créditos": {
-                "Promedio": statistics.mean(costo_credito),
-                "Moda": statistics.mode(costo_credito),
-                "Máximo": max(costo_credito),
-                "Mínimo": min(costo_credito)
-            }
-        }
-
-        filas = []
-        estadisticas_nombres = ["Promedio", "Moda", "Máximo", "Mínimo"]
-        for nombre, stats in estadisticas_starships.items():
-            fila = [nombre]
-            for stat in estadisticas_nombres:
-                fila.append(stats[stat])
+        for clase_nave, stats in clases_starships.items():
+            print(f"Estadísticas para la clase de nave: {clase_nave}")
+            headers = ["Estadística", "Promedio", "Moda", "Máximo", "Mínimo"]
+            filas = []
+            fila = ["Hiperimpulsor"]
+            fila.extend([statistics.mean(stats["Hiperimpulsor"]), statistics.mode(stats["Hiperimpulsor"]) if len(set(stats["Hiperimpulsor"])) != len(stats["Hiperimpulsor"]) else "No hay moda", max(stats["Hiperimpulsor"]), min(stats["Hiperimpulsor"])])
+            filas.append(fila)
+            fila = ["MGLT"]
+            fila.extend([statistics.mean(stats["MGLT"]), statistics.mode(stats["MGLT"]) if len(set(stats["MGLT"])) != len(stats["MGLT"]) else "No hay moda", max(stats["MGLT"]), min(stats["MGLT"])])
+            filas.append(fila)
+            fila = ["Velocidad máxima en la atmósfera"]
+            fila.extend([statistics.mean(stats["Velocidad máxima en la atmósfera"]), statistics.mode(stats["Velocidad máxima en la atmósfera"]) if len(set(stats["Velocidad máxima en la atmósfera"])) != len(stats["Velocidad máxima en la atmósfera"]) else "No hay moda", max(stats["Velocidad máxima en la atmósfera"]), min(stats["Velocidad máxima en la atmósfera"])])
+            filas.append(fila)
+            fila = ["Costo en créditos"]
+            fila.extend([statistics.mean(stats["Costo en créditos"]), statistics.mode(stats["Costo en créditos"]) if len(set(stats["Costo en créditos"])) != len(stats["Costo en créditos"]) else "No hay moda", max(stats["Costo en créditos"]), min(stats["Costo en créditos"])])
             filas.append(fila)
 
-        headers = ["Estadística", "Promedio", "Moda", "Máximo", "Mínimo"]
-        print(tabulate.tabulate(filas, headers=headers, tablefmt="grid"))
-
-
-
-
+            print(tabulate.tabulate(filas, headers, tablefmt="grid"))
+            print()
 
 
     def crear_mision(self):
@@ -478,6 +465,7 @@ class App:
                         integrantes_mision=mision.get('integrantes_mision', [])
                     ))
             self.misiones_obj = misiones
+            print("Se guardo correctamente el archivo con las misiones.")
         except FileNotFoundError:
             print("No se encontró el archivo de misiones.")
 
